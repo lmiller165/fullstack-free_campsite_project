@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<form action="/sign-up" method="POST" class="container">
+
+    <div class="form-group">
+      <label>First Name:
+          <input type="text" name="fname" required class="form-control">
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Last Name:
+          <input type="text" name="lname" required class="form-control">
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Email:
+          <input type="email" name="email" required class="form-control">
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Password:
+          <input type="password" name="password" required class="form-control">
+      </label>
+    </div>
+
+    <div class="form-group">
+      <input type="submit" value="Sign Up" class="btn-dark">
+    </div>
+</form>
+
+{% endblock %}

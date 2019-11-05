@@ -21,10 +21,10 @@ class Campsite(db.Model):
     permit = db.Column(db.Boolean)
     permit_info = db.Column(db.String)
     #Foreign Keys
-    # camp_amen_id = set up foreign key
-    # review_id = set up foreign key
-    # rating_id = set up foreign key
-    # user_id = set up foreign key
+    camp_amen_id = db.Column(db.Integer, db.ForeignKey('campsite_amenities.camp_amen_id'))
+    review_id = db.Column(db.Integer, db.ForeignKey('reviews.review_id'))
+    rating_id = db.Column(db.Integer, db.ForeignKey('ratings.rating_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
     def __repr__(self):
         """Show helpful campsite information when printed"""
@@ -42,8 +42,8 @@ class User(db.Model):
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     fname = db.Column(db.String(50), nullable=False)
     lname = db.Column(db.String(50), nullable=False)
-    username = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(50), nullable=False, unique=True)
 
 
     def __repr__(self):

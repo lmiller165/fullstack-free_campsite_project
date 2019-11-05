@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h2 class="container">Add a new campsite</h2>
+
+<form action="/sign-up" method="POST" class="container">
+
+    <h4>General Information(required)</h4>
+
+    <div class="form-group">
+      <label>Name:
+          <input type="text" name="name" required class="form-control">
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Latitude:
+          <input type="text" name="lname" required class="form-control">
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Longitude:
+          <input type="email" name="email" required class="form-control">
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description:</label>
+        <textarea class="form-control" rows="5" id="comment"></textarea>
+      </label>
+    </div>
+
+    <h4>Campsite Amenities</h4>
+
+    <div class="checkbox">
+      <label><input type="checkbox" value="">Amenity 1</label>
+    </div>
+    <div class="checkbox">
+      <label><input type="checkbox" value="">Amenity 2</label>
+    </div>
+    <div class="checkbox disabled">
+      <label><input type="checkbox" value="" disabled>Amenity 3</label>
+    </div>
+
+
+    <div class="form-group">
+      <input type="submit" value="Sign Up" class="btn-dark">
+    </div>
+
+
+</form>
+
+
+
+{% endblock %}

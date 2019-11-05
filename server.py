@@ -1,12 +1,5 @@
-################################################################################
-#TODO PERSONAL NOTES::
-#[ ] Clean up requirements.txt doc, lifted from ratings lab
 
-
-
-################################################################################
-################################################################################
-"""Movie Ratings."""
+"""Free Camping Project."""
 
 from jinja2 import StrictUndefined
 
@@ -29,9 +22,74 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/')
 def index():
-    """homepage: Login or signup"""
+    """Homepage: Login or signup"""
 
     return render_template("homepage.html")
+
+
+@app.route('/', methods=['POST'])
+def login_process():
+    """Logging in from homepage"""
+
+    # Get form variables from homepage log in
+    email = request.form["email"]
+    password = request.form["password"]
+
+    # query user info using email variable
+    user = User.query.filter_by(email=email).first()
+
+
+    if not user:
+        flash("No such user")
+        return redirect("/")
+
+    if user.password != password:
+        flash("Incorrect password")
+        return redirect("/")
+
+    session["user_id"] = user.user_id
+
+    flash("Logged in")
+    # return redirect(f"/users/{user.user_id}")
+
+
+    return render_template("homepage.html")
+
+
+@app.route('/sign-up', methods=['GET'])
+def register_form():
+    """Show form for user signup."""
+
+    return render_template("sign-up.html")
+
+
+@app.route('/sign-up', methods=['POST'])
+def signup_process():
+    """Signup process and adding user to db"""
+
+    # Get form variables from sign-up.html
+    fname = request.form["fname"]
+    lname = request.form["lname"]
+    email = request.form["email"]
+    password = request.form["password"]
+
+    new_user = User(fname=fname, lname=lname, email=email, password=password)
+
+    #add new user to our db
+    db.session.add(new_user)
+    db.session.commit()
+
+    flash(f"User {email} added.")
+    return redirect("/")
+
+    # return redirect(f"/users/{new_user.user_id}")
+
+
+@app.route('/add-campsite', methods=['GET'])
+def add_campsite():
+    """Show form for user signup."""
+
+    return render_template("add-campsite.html")
 
 
 ################################################################################
