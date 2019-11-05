@@ -1,70 +1,58 @@
-###############################################################################################
-#::NOTES::
-#[ ] Clean up requirements.txt doc, lifted from a requirement doc from the ratings lab
+################################################################################
+#TODO PERSONAL NOTES::
+#[ ] Clean up requirements.txt doc, lifted from ratings lab
+
+
+
+################################################################################
+################################################################################
+"""Movie Ratings."""
+
+from jinja2 import StrictUndefined
+
+from flask import Flask, render_template, request, flash, redirect, session
+from flask_debugtoolbar import DebugToolbarExtension
+
+from model import connect_to_db, db, Campsite, User, Rating, Review, Campsite_amenities, Amenity 
+
+
+app = Flask(__name__)
+
+# Required to use Flask sessions and the debug toolbar
+app.secret_key = "SECRET"
+
+# Normally, if you use an undefined variable in Jinja2, it fails silently.
+# This is horrible. Fix this so that, instead, it raises an error.
+app.jinja_env.undefined = StrictUndefined
+
+
+
+@app.route('/')
+def index():
+    """homepage: Login or signup"""
+
+    return render_template("homepage.html")
+
+
+################################################################################
+
+if __name__ == "__main__":
+    # We have to set debug=True here, since it has to be True at the point
+    # that we invoke the DebugToolbarExtension
+
+    # Do not debug for demo
+    app.debug = True
+
+    connect_to_db(app)
+
+    # Use the DebugToolbar
+    DebugToolbarExtension(app)
+
+    app.run(host="0.0.0.0")
 
 
 
 
-
-##############################################################################################
-##############################################################################################
-
-
-#This code is straight from the documentation of Flask-SQLAlchemy
-#Shows how to make a connection via SQL Alchemy 
-def connect_to_db(app):
-    """Connect the database to our Flask app."""
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = #change route:'postgresql:///hackbright'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.app = app
-    db.init_app(app)
-
-
-#Example of using QUERY (SQL) in python. Note to remember to add "db_cursor"
-#You will probably not need this b/c you will use SQL Alchemy
-def get_student_by_github(github):
-    """Given a GitHub account name, print info about the matching student."""
-
-    QUERY = """
-        SELECT first_name, last_name, github
-        FROM students
-        WHERE github = :github
-        """
-    #similar to a file handler, the mechanism used to look at rows contained in our query results.
-    db_cursor = db.session.execute(QUERY, {'github': github})
-
-    #fetchone is pulling one result
-    row = db_cursor.fetchone()
-
-    print("Student: {} {}\nGitHub account: {}".format(row[0], row[1], row[2]))
-
-    #you should always close your connection to your data base.
-    #look up if you still need this with SQL Alchemy
-    db.session.close()
-
-#Example of a route using SQLAlchemy, you could also use raw SQL 
-@app.route('/register', methods=['POST'])
-def register_process():
-    """Process registration."""
-
-    # Get form variables
-    email = request.form["email"]
-    password = request.form["password"]
-    age = int(request.form["age"])
-    zipcode = request.form["zipcode"]
-
-    new_user = User(email=email, password=password, age=age, zipcode=zipcode)
-
-    db.session.add(new_user)
-    db.session.commit()
-
-    flash(f"User {email} added.")
-    return redirect(f"/users/{new_user.user_id}")
-
-
-##############################################################################################
-##############################################################################################
 
 
 

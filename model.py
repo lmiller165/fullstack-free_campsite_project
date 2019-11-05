@@ -1,0 +1,158 @@
+"""Models and database functions for Ratings project."""
+from flask_sqlalchemy import SQLAlchemy
+import correlation
+from collections import defaultdict
+
+# This is the connection to the PostgreSQL database; we're getting this through
+# the Flask-SQLAlchemy helper library. On this, we can find the `session`
+# object, where we do most of our interactions (like committing, etc.)
+
+db = SQLAlchemy()
+
+
+##############################################################################
+# Model definitions
+
+class Campsite(db.Model):
+    """Table for campsites"""
+
+    __tablename__ = "campsites"
+
+    campsite_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    lat = db.Column(db.Integer, nullable=False)
+    lon = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    permit = db.Column(db.Boolean)
+    permit_info = db.Column(db.String)
+    #Foreign Keys
+    # camp_amen_id = set up foreign key
+    # review_id = set up foreign key
+    # rating_id = set up foreign key
+    # user_id = set up foreign key
+
+    def __repr__(self):
+        """Show helpful campsite information when printed"""
+        return f"""<Campsite={self.name} 
+                    lat={self.lat} 
+                    lon={self.lon} 
+                    description={self.description}>"""
+
+
+class User(db.Model):
+    """Table for all our campers"""
+
+    __tablename__ = "users"
+
+    user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    fname = db.Column(db.String(50), nullable=False)
+    lname = db.Column(db.String(50), nullable=False)
+    username = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False)
+
+
+    def __repr__(self):
+        """Show helpful user information when printed"""
+        return f"""<user_id={self.user_id} 
+                    name={self.fname} {self.lname} 
+                    username={self.username} 
+                    email={self.email}>"""
+
+
+class Rating(db.Model):
+    """Table for our three ratings"""
+
+    __tablename__ = "ratings"
+
+    rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    noise_level = db.Column(db.Integer)
+    risk_level = db.Column(db.Integer)
+    privacy_level = db.Column(db.Integer)
+    #Foreign Keys
+    campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+
+    def __repr__(self):
+        """Show helpful rating information when printed"""    
+
+        return f"""<rating_id={self.rating_id} 
+                noise_level={self.noise_level} 
+                risk_level={self.risk_level} 
+                privacy_level={self.privacy_level}>"""
+
+
+class Review(db.Model):
+    """Table for our campsite reviews"""
+
+    __tablename__ = "reviews"
+
+    review_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    review_description = db.Column(db.String, nullable=False)
+
+    #Foreign Keys
+    campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+
+
+    def __repr__(self):
+        """Show helpful rating information when printed"""    
+
+        return f"""<review_id={self.review_id} 
+                review_description={self.review_description}>"""
+
+
+class Campsite_amenities(db.Model):
+    """Table to link our amenities to our campsite"""
+
+    __tablename__ = "campsite_amenities" 
+
+    camp_amen_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+
+    #Foreign Key
+    campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
+
+
+    def __repr__(self):
+        """Show helpful rating information when printed"""    
+
+        return f"""<camp_amen_id={self.camp_amen_id} 
+                campsite_id={self.campsite_id}>"""
+
+
+class Amenity(db.Model):
+    """Table to hold all our amenity options"""
+
+    __tablename__ = "amenities"
+
+    amenity_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(40))
+
+    def __repr__(self):
+        """Show helpful rating information when printed"""    
+
+        return f"""<amenity_id={self.amenity_id} 
+                name={self.name}>"""
+
+
+##############################################################################
+# Helper functions
+
+def connect_to_db(app):
+    """Connect the database to our Flask app."""
+
+    # Configure to use our PostgreSQL database
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///campsites'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_ECHO'] = True
+    db.app = app
+    db.init_app(app)
+
+
+if __name__ == "__main__":
+    # As a convenience, if we run this module interactively, it will leave
+    # you in a state of being able to work with the database directly.
+
+    from server import app
+
+    connect_to_db(app)
+    print("Connected to DB.")
