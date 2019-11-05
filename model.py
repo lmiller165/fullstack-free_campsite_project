@@ -1,11 +1,6 @@
-"""Models and database functions for Ratings project."""
+"""Models and database functions for Free Camping project."""
 from flask_sqlalchemy import SQLAlchemy
-import correlation
-from collections import defaultdict
 
-# This is the connection to the PostgreSQL database; we're getting this through
-# the Flask-SQLAlchemy helper library. On this, we can find the `session`
-# object, where we do most of our interactions (like committing, etc.)
 
 db = SQLAlchemy()
 
@@ -60,7 +55,7 @@ class User(db.Model):
 
 
 class Rating(db.Model):
-    """Table for our three ratings"""
+    """Table for three ratings"""
 
     __tablename__ = "ratings"
 
