@@ -50,14 +50,14 @@ def login_process():
     session["user_id"] = user.user_id
 
     flash("Logged in")
-    # return redirect(f"/users/{user.user_id}")
+    return redirect(f"/users/{user.user_id}")
 
 
     return render_template("homepage.html")
 
 
 @app.route('/sign-up', methods=['GET'])
-def register_form():
+def signup_form():
     """Show form for user signup."""
 
     return render_template("sign-up.html")
