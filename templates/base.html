@@ -17,13 +17,17 @@
 
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="/login">Log In</a></li>
+                <li><a href="/add-campsite">Add Campsite</a></li>
+                <li><a href="/">Log In</a></li>
             </ul>
         </div>
 
     </div>
 </div>
 
+{% for flash in get_flashed_messages() %}
+  {{ flash }}
+{% endfor %}
 
   <!-- This is where the main content goes. -->
   {% block body %}

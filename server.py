@@ -3,7 +3,7 @@
 
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, session, render_template, request, flash, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Campsite, User, Rating, Review, Campsite_amenities, Amenity 
@@ -47,13 +47,21 @@ def login_process():
         flash("Incorrect password")
         return redirect("/")
 
+    #saving user_id
     session["user_id"] = user.user_id
 
+    #flash message not currently working 
     flash("Logged in")
-    return redirect(f"/users/{user.user_id}")
+    return render_template(f"/view-all-campsites/{user.user_id}")
 
 
-    return render_template("homepage.html")
+@app.route('/logout')
+def logout():
+    """Log out."""
+
+    del session["user_id"]
+    flash("Logged Out.")
+    return redirect("/")
 
 
 @app.route('/sign-up', methods=['GET'])
@@ -84,12 +92,64 @@ def signup_process():
 
     # return redirect(f"/users/{new_user.user_id}")
 
+@app.route("/campsites")
+def movie_list():
+    """Show list of campsites."""
 
-@app.route('/add-campsite', methods=['GET'])
+    campsites = Campsite.query.order_by('title').all()
+    return render_template("view-all-campsites.html", campsites=campsites)
+
+
+@app.route('/add-campsite')
+def add_campsite_form():
+    """Show a logged in user the add campsite form"""
+
+    #User_id pulled from session
+    user_id = session.get("user_id")
+
+    #Checking for user_id
+    if not user_id:
+        flash(f"You must be logged in to add a campsite")
+        raise Exception("No user logged in.")
+
+    return redirect("/")
+
+
+@app.route('/add-campsite', methods=['POST'])
 def add_campsite():
-    """Show form for user signup."""
+    """Add a campsite as a registered user."""
 
-    return render_template("add-campsite.html")
+    # Get form variables
+    name = request.form["name"]
+    lat = int(request.form["lat"])
+    lon = int(request.form["lon"])
+    description = request.form["description"]
+
+    #Amenities form variables
+    electricity_checked = request.form.get("electricity") != None
+    wifi_checked = request.form.get("wifi") != None
+    showers_checked = request.form.get("showers") != None
+    water_checked = request.form.get("water") != None
+    toilets_checked = request.form.get("toilets") != None
+    petfriendly_checked = request.form.get("petfriendly") != None
+    tentfriendly_checked = request.form.get("tentfriendly") != None
+
+    #Ratings form varialbes 
+    noise_level = int(request.form["noiselevel"])
+    privacy_level = int(request.form["privacylevel"])
+    risk_level = int(request.form["risklevel"])
+
+    #User_id pulled from session
+    user_id = session.get("user_id")
+
+    #Checking for user_id
+    if not user_id:
+        raise Exception("No user logged in.")
+
+
+    db.session.commit()
+
+    return render_template("view-all.campsites")
 
 
 ################################################################################

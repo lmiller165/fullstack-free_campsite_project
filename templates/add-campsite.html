@@ -2,6 +2,9 @@
 
 {% block body %}
 
+
+
+{% if "user_id" in session %}
 <h2 class="container">Add a new campsite</h2>
 
 <form action="/sign-up" method="POST" class="container">
@@ -16,50 +19,50 @@
 
     <div class="form-group">
       <label>Latitude:
-          <input type="text" name="lname" required class="form-control">
+          <input type="number" name="lat" required class="form-control">
       </label>
     </div>
 
     <div class="form-group">
       <label>Longitude:
-          <input type="email" name="email" required class="form-control">
+          <input type="number" name="lon" required class="form-control">
       </label>
     </div>
 
     <div class="form-group">
       <label for="description">Description:</label>
-        <textarea class="form-control" rows="5" id="comment"></textarea>
+        <textarea class="form-control" name="description" rows="5" id="description"></textarea>
       </label>
     </div>
 
     <h4>Campsite Amenities</h4>
 
     <div class="checkbox">
-      <label><input type="checkbox" value="electricity">Electricity</label>
+      <label><input type="checkbox" name="electricity" value="electricity" >Electricity</label>
     </div>
 
     <div class="checkbox">
-      <label><input type="checkbox" value="wifi">Wifi</label>
+      <label><input type="checkbox" name="wifi" value="wifi">Wifi</label>
     </div>
 
-    <div class="checkbox disabled">
-      <label><input type="checkbox" value="showers">Showers</label>
+    <div class="checkbox">
+      <label><input type="checkbox" name="showers" value="showers">Showers</label>
     </div>
 
      <div class="checkbox">
-      <label><input type="checkbox" value="water">Water</label>
+      <label><input type="checkbox" name="water" value="water">Water</label>
     </div>
 
     <div class="checkbox">
-      <label><input type="checkbox" value="toilets">Toilets</label>
+      <label><input type="checkbox" name="toilets" value="toilets">Toilets</label>
     </div>
 
-    <div class="checkbox disabled">
-      <label><input type="checkbox" value="petfriendly">Pet Friendly</label>
+    <div class="checkbox">
+      <label><input type="checkbox" name="petfriendly" value="petfriendly">Pet Friendly</label>
     </div>
 
-    <div class="checkbox disabled">
-      <label><input type="checkbox" value="tentfriendly">Tent Friendly</label>
+    <div class="checkbox">
+      <label><input type="checkbox" name="tentfriendly" value="tentfriendly">Tent Friendly</label>
     </div>
 
 
@@ -68,57 +71,56 @@
     <div>
       <h5>Noise level</h5>
         <div class="radio inline">
-          <label><input type="radio" value="1">1</label>
-          <label><input type="radio" value="2">2</label>
-          <label><input type="radio" value="3">3</label>
-          <label><input type="radio" value="4">4</label>
-          <label><input type="radio" value="5">5</label>
-          <label><input type="radio" value="6">6</label>
-          <label><input type="radio" value="7">7</label>
-          <label><input type="radio" value="8">8</label>
-          <label><input type="radio" value="9">9</label>
-          <label><input type="radio" value="10">10</label>
+          <label><input type="radio" name="noiselevel" value="1">1</label>
+          <label><input type="radio" name="noiselevel" value="2">2</label>
+          <label><input type="radio" name="noiselevel" value="3">3</label>
+          <label><input type="radio" name="noiselevel" value="4">4</label>
+          <label><input type="radio" name="noiselevel" value="5">5</label>
+          <label><input type="radio" name="noiselevel" value="6">6</label>
+          <label><input type="radio" name="noiselevel" value="7">7</label>
+          <label><input type="radio" name="noiselevel" value="8">8</label>
+          <label><input type="radio" name="noiselevel" value="9">9</label>
+          <label><input type="radio" name="noiselevel" value="10">10</label>
         </div>
     </div>
 
     <div>
       <h5>Privacy level</h5>
         <div class="radio inline">
-          <label><input type="radio" value="1">1</label>
-          <label><input type="radio" value="2">2</label>
-          <label><input type="radio" value="3">3</label>
-          <label><input type="radio" value="4">4</label>
-          <label><input type="radio" value="5">5</label>
-          <label><input type="radio" value="6">6</label>
-          <label><input type="radio" value="7">7</label>
-          <label><input type="radio" value="8">8</label>
-          <label><input type="radio" value="9">9</label>
-          <label><input type="radio" value="10">10</label>
+          <label><input type="radio" name="privacylevel" value="1">1</label>
+          <label><input type="radio" name="privacylevel" value="2">2</label>
+          <label><input type="radio" name="privacylevel" value="3">3</label>
+          <label><input type="radio" name="privacylevel" value="4">4</label>
+          <label><input type="radio" name="privacylevel" value="5">5</label>
+          <label><input type="radio" name="privacylevel" value="6">6</label>
+          <label><input type="radio" name="privacylevel" value="7">7</label>
+          <label><input type="radio" name="privacylevel" value="8">8</label>
+          <label><input type="radio" name="privacylevel" value="9">9</label>
+          <label><input type="radio" name="privacylevel" value="10">10</label>
         </div>
     </div>
 
     <div>
       <h5>Risk level</h5>
         <div class="radio inline">
-          <label><input type="radio" value="1">1</label>
-          <label><input type="radio" value="2">2</label>
-          <label><input type="radio" value="3">3</label>
-          <label><input type="radio" value="4">4</label>
-          <label><input type="radio" value="5">5</label>
-          <label><input type="radio" value="6">6</label>
-          <label><input type="radio" value="7">7</label>
-          <label><input type="radio" value="8">8</label>
-          <label><input type="radio" value="9">9</label>
-          <label><input type="radio" value="10">10</label>
+          <label><input type="radio" name="risklevel" value="1">1</label>
+          <label><input type="radio" name="risklevel" value="2">2</label>
+          <label><input type="radio" name="risklevel" value="3">3</label>
+          <label><input type="radio" name="risklevel" value="4">4</label>
+          <label><input type="radio" name="risklevel" value="5">5</label>
+          <label><input type="radio" name="risklevel" value="6">6</label>
+          <label><input type="radio" name="risklevel" value="7">7</label>
+          <label><input type="radio" name="risklevel" value="8">8</label>
+          <label><input type="radio" name="risklevel" value="9">9</label>
+          <label><input type="radio" name="risklevel" value="10">10</label>
         </div>
     </div>
 
     <div class="form-group">
       <input type="submit" value="Add Campsite" class="btn-dark">
     </div>
-
-
 </form>
+{% endif %}
 
 
 

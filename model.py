@@ -20,11 +20,27 @@ class Campsite(db.Model):
     description = db.Column(db.String, nullable=False)
     permit = db.Column(db.Boolean)
     permit_info = db.Column(db.String)
+
     #Foreign Keys
-    camp_amen_id = db.Column(db.Integer, db.ForeignKey('campsite_amenities.camp_amen_id'))
+    amenity_id = db.Column(db.Integer, db.ForeignKey('amenities.amenity_id'))
     review_id = db.Column(db.Integer, db.ForeignKey('reviews.review_id'))
     rating_id = db.Column(db.Integer, db.ForeignKey('ratings.rating_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+
+
+    # Define relationships
+    user = db.relationship("User",
+                            backref=db.backref("campsites",
+                                               order_by=campsite_id))
+
+    # rating = db.relationship("Rating",
+    #                         backref=db.backref("campsites",
+    #                                            order_by=campsite_id))
+
+    # review = db.relationship("Review",
+    #                         backref=db.backref("campsites",
+    #                                            order_by=campsite_id))
+
 
     def __repr__(self):
         """Show helpful campsite information when printed"""
@@ -63,6 +79,7 @@ class Rating(db.Model):
     noise_level = db.Column(db.Integer)
     risk_level = db.Column(db.Integer)
     privacy_level = db.Column(db.Integer)
+
     #Foreign Keys
     campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
@@ -101,16 +118,18 @@ class Campsite_amenities(db.Model):
 
     __tablename__ = "campsite_amenities" 
 
-    camp_amen_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-
-    #Foreign Key
+    campsite_amenities_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    amenity_id = db.Column(db.Integer, db.ForeignKey('amenities.amenity_id'))
     campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
 
+    # amenity = db.relationship("amenities",
+    #                     backref=db.backref("Campsite_amenities",
+    #                                         order_by=amenity_id)) 
 
     def __repr__(self):
-        """Show helpful rating information when printed"""    
+        """Show helpful rating information when printed"""   
 
-        return f"""<camp_amen_id={self.camp_amen_id} 
+        return f"""<amenity={self.amenity_id} 
                 campsite_id={self.campsite_id}>"""
 
 
@@ -120,7 +139,7 @@ class Amenity(db.Model):
     __tablename__ = "amenities"
 
     amenity_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(40))
+    name = db.Column(db.String(50))
 
     def __repr__(self):
         """Show helpful rating information when printed"""    
@@ -144,9 +163,9 @@ def connect_to_db(app):
 
 
 if __name__ == "__main__":
+
     # As a convenience, if we run this module interactively, it will leave
     # you in a state of being able to work with the database directly.
-
     from server import app
 
     connect_to_db(app)
