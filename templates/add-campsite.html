@@ -4,10 +4,9 @@
 
 
 
-{% if "user_id" in session %}
 <h2 class="container">Add a new campsite</h2>
 
-<form action="/sign-up" method="POST" class="container">
+<form action="/add-campsite" method="POST" class="container">
 
     <h4>General Information(required)</h4>
 
@@ -19,13 +18,13 @@
 
     <div class="form-group">
       <label>Latitude:
-          <input type="number" name="lat" required class="form-control">
+          <input type="float" name="lat" required class="form-control">
       </label>
     </div>
 
     <div class="form-group">
       <label>Longitude:
-          <input type="number" name="lon" required class="form-control">
+          <input type="float" name="lon" required class="form-control">
       </label>
     </div>
 
@@ -35,34 +34,49 @@
       </label>
     </div>
 
+    <h4>Permit Info</h4>
+
+    <div class="checkbox">
+      <label><input type="checkbox" name="yes" value="yes">Yes, you need a permit</label>
+    </div>
+    <div class="checkbox">
+      <label><input type="checkbox" name="no" value="no">No permit neccessary</label>
+    </div>
+
+    <div class="form-group">
+      <label for="permit_info">Details:</label>
+        <textarea class="form-control" name="permit_info" rows="3" id="description"></textarea>
+      </label>
+    </div>
+
     <h4>Campsite Amenities</h4>
 
     <div class="checkbox">
-      <label><input type="checkbox" name="electricity" value="electricity" >Electricity</label>
+      <label><input type="checkbox" name="amenities" value="1" >Electricity</label>
     </div>
 
     <div class="checkbox">
-      <label><input type="checkbox" name="wifi" value="wifi">Wifi</label>
+      <label><input type="checkbox" name="amenities" value="2">Wifi</label>
     </div>
 
     <div class="checkbox">
-      <label><input type="checkbox" name="showers" value="showers">Showers</label>
+      <label><input type="checkbox" name="amenities" value="3">Showers</label>
     </div>
 
      <div class="checkbox">
-      <label><input type="checkbox" name="water" value="water">Water</label>
+      <label><input type="checkbox" name="amenities" value="4">Water</label>
     </div>
 
     <div class="checkbox">
-      <label><input type="checkbox" name="toilets" value="toilets">Toilets</label>
+      <label><input type="checkbox" name="amenities" value="5">Toilets</label>
     </div>
 
     <div class="checkbox">
-      <label><input type="checkbox" name="petfriendly" value="petfriendly">Pet Friendly</label>
+      <label><input type="checkbox" name="amenities" value="6">Pet Friendly</label>
     </div>
 
     <div class="checkbox">
-      <label><input type="checkbox" name="tentfriendly" value="tentfriendly">Tent Friendly</label>
+      <label><input type="checkbox" name="amenities" value="7">Tent Friendly</label>
     </div>
 
 
@@ -120,7 +134,7 @@
       <input type="submit" value="Add Campsite" class="btn-dark">
     </div>
 </form>
-{% endif %}
+
 
 
 

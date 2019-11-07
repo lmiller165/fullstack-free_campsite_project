@@ -17,8 +17,15 @@
 
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li><a href="/view-campsites">View Campsites</a></li>
                 <li><a href="/add-campsite">Add Campsite</a></li>
-                <li><a href="/">Log In</a></li>
+<!--                 <li><a href="/">Log In</a></li> -->
+<!--                 <li><a href="/logout">Log Out</a></li> -->
+                {% if "user_id" in session %}
+                  <li><a href="/logout">Logout</a></li>
+                {% else %}
+                  <li><a href="/">Login</a></li>
+                {% endif %}
             </ul>
         </div>
 

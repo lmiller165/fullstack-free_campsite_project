@@ -15,31 +15,19 @@ class Campsite(db.Model):
 
     campsite_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    lat = db.Column(db.Integer, nullable=False)
-    lon = db.Column(db.Integer, nullable=False)
+    lat = db.Column(db.Float, nullable=False)
+    lon = db.Column(db.Float, nullable=False)
     description = db.Column(db.String, nullable=False)
-    permit = db.Column(db.Boolean)
+    permit = db.Column(db.Boolean, default=False)
     permit_info = db.Column(db.String)
 
     #Foreign Keys
-    amenity_id = db.Column(db.Integer, db.ForeignKey('amenities.amenity_id'))
-    review_id = db.Column(db.Integer, db.ForeignKey('reviews.review_id'))
-    rating_id = db.Column(db.Integer, db.ForeignKey('ratings.rating_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
-
 
     # Define relationships
     user = db.relationship("User",
                             backref=db.backref("campsites",
                                                order_by=campsite_id))
-
-    # rating = db.relationship("Rating",
-    #                         backref=db.backref("campsites",
-    #                                            order_by=campsite_id))
-
-    # review = db.relationship("Review",
-    #                         backref=db.backref("campsites",
-    #                                            order_by=campsite_id))
 
 
     def __repr__(self):
@@ -84,6 +72,15 @@ class Rating(db.Model):
     campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
+    # Define relationships
+    user = db.relationship("User",
+                            backref=db.backref("ratings",
+                                               order_by=rating_id))
+    campsite = db.relationship("Campsite",
+                            backref=db.backref("ratings",
+                                               order_by=rating_id))
+
+
     def __repr__(self):
         """Show helpful rating information when printed"""    
 
@@ -105,6 +102,13 @@ class Review(db.Model):
     campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
+    # Define relationships
+    user = db.relationship("User",
+                            backref=db.backref("reviews",
+                                               order_by=review_id))
+    campsite = db.relationship("Campsite",
+                            backref=db.backref("reviews",
+                                               order_by=review_id))
 
     def __repr__(self):
         """Show helpful rating information when printed"""    
@@ -119,12 +123,18 @@ class Campsite_amenities(db.Model):
     __tablename__ = "campsite_amenities" 
 
     campsite_amenities_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+
+    #Foreign Keys
     amenity_id = db.Column(db.Integer, db.ForeignKey('amenities.amenity_id'))
     campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
 
-    # amenity = db.relationship("amenities",
-    #                     backref=db.backref("Campsite_amenities",
-    #                                         order_by=amenity_id)) 
+    #Define relationships
+    amenity = db.relationship("Amenity",
+                            backref=db.backref("campsite_amenities",
+                                               order_by=campsite_amenities_id))
+    campsite = db.relationship("Campsite",
+                            backref=db.backref("campsite_amenities",
+                                               order_by=campsite_amenities_id))
 
     def __repr__(self):
         """Show helpful rating information when printed"""   

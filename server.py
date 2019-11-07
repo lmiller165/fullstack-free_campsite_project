@@ -19,11 +19,12 @@ app.secret_key = "SECRET"
 app.jinja_env.undefined = StrictUndefined
 
 
-
+############################## LOGIN PROCESS ###################################
 @app.route('/')
 def index():
     """Homepage: Login or signup"""
 
+    #you can log in or choose to create an account from the homepage.
     return render_template("homepage.html")
 
 
@@ -50,9 +51,8 @@ def login_process():
     #saving user_id
     session["user_id"] = user.user_id
 
-    #flash message not currently working 
     flash("Logged in")
-    return render_template(f"/view-all-campsites/{user.user_id}")
+    return redirect("/view-campsites")
 
 
 @app.route('/logout')
@@ -63,6 +63,8 @@ def logout():
     flash("Logged Out.")
     return redirect("/")
 
+
+############################# SIGN UP PROCESS ##################################
 
 @app.route('/sign-up', methods=['GET'])
 def signup_form():
@@ -90,15 +92,17 @@ def signup_process():
     flash(f"User {email} added.")
     return redirect("/")
 
-    # return redirect(f"/users/{new_user.user_id}")
 
-@app.route("/campsites")
-def movie_list():
-    """Show list of campsites."""
+############################### VIEW CAMPSITES #################################
 
-    campsites = Campsite.query.order_by('title').all()
-    return render_template("view-all-campsites.html", campsites=campsites)
+@app.route('/view-campsites', methods=['GET'])
+def list_campsites():
+    """Show list of all campsites"""
 
+    return render_template("view-campsites.html")
+
+
+################################ ADD CAMPSITES #################################
 
 @app.route('/add-campsite')
 def add_campsite_form():
@@ -112,27 +116,25 @@ def add_campsite_form():
         flash(f"You must be logged in to add a campsite")
         raise Exception("No user logged in.")
 
-    return redirect("/")
+        return redirect("/")
+
+    else:
+        return render_template("add-campsite.html")
 
 
 @app.route('/add-campsite', methods=['POST'])
 def add_campsite():
     """Add a campsite as a registered user."""
 
-    # Get form variables
+    # Campsite form variables
     name = request.form["name"]
-    lat = int(request.form["lat"])
-    lon = int(request.form["lon"])
+    lat = request.form["lat"]
+    lon = request.form["lon"]
     description = request.form["description"]
+    if request.form.get("permit") == "Yes":
+        permit = True
+    permit_info = request.form["permit_info"]
 
-    #Amenities form variables
-    electricity_checked = request.form.get("electricity") != None
-    wifi_checked = request.form.get("wifi") != None
-    showers_checked = request.form.get("showers") != None
-    water_checked = request.form.get("water") != None
-    toilets_checked = request.form.get("toilets") != None
-    petfriendly_checked = request.form.get("petfriendly") != None
-    tentfriendly_checked = request.form.get("tentfriendly") != None
 
     #Ratings form varialbes 
     noise_level = int(request.form["noiselevel"])
@@ -142,14 +144,45 @@ def add_campsite():
     #User_id pulled from session
     user_id = session.get("user_id")
 
-    #Checking for user_id
-    if not user_id:
-        raise Exception("No user logged in.")
+    new_campsite = Campsite(name=name, 
+                        lat=lat, 
+                        lon=lon, 
+                        description=description,
+                        # permit=permit,
+                        # permit_info=permit_info,
+                        user_id=user_id)
 
+    new_rating = Rating(noise_level=noise_level,
+                        risk_level=risk_level,
+                        privacy_level=privacy_level,
+                        user_id=user_id)
+
+    amenities = request.form.getlist("amenities")
+
+    for amenity in amenities:
+        new_campsite.campsite_amenities.append(amenity)
+
+
+    # new_amenity = Campsite_amenities(electricity=electricity,
+    #                                   wifi=wifi,
+    #                                   showers=showers,
+    #                                   water=water,
+    #                                   toilets=toilets,
+    #                                   petfriendly=petfriendly,
+    #                                   tentfriendly=tentfriendly)
+
+
+    new_campsite.ratings.append(new_rating)
+    # new_campsite.campsite_amenities.append(new_amenity)
+
+    #add all info to our db
+    db.session.add(new_campsite)
+
+    # db.session.add(new_amenity)
 
     db.session.commit()
 
-    return render_template("view-all.campsites")
+    return render_template("view-campsites.html")
 
 
 ################################################################################
@@ -168,6 +201,13 @@ if __name__ == "__main__":
 
     app.run(host="0.0.0.0")
 
+
+############################################################################
+
+#saving for later in case I need it
+#this code is from ashely after my add a campstie and other tables: 
+    # user = User.query.get(user_id)
+    # new_rating.user = user
 
 
 
