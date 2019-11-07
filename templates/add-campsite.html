@@ -51,35 +51,20 @@
 
     <h4>Campsite Amenities</h4>
 
-    <div class="checkbox">
-      <label><input type="checkbox" name="amenities" value="1" >Electricity</label>
-    </div>
-
-    <div class="checkbox">
-      <label><input type="checkbox" name="amenities" value="2">Wifi</label>
-    </div>
-
-    <div class="checkbox">
-      <label><input type="checkbox" name="amenities" value="3">Showers</label>
-    </div>
-
-     <div class="checkbox">
-      <label><input type="checkbox" name="amenities" value="4">Water</label>
-    </div>
-
-    <div class="checkbox">
-      <label><input type="checkbox" name="amenities" value="5">Toilets</label>
-    </div>
-
-    <div class="checkbox">
-      <label><input type="checkbox" name="amenities" value="6">Pet Friendly</label>
-    </div>
-
-    <div class="checkbox">
-      <label><input type="checkbox" name="amenities" value="7">Tent Friendly</label>
-    </div>
-
-
+    {% for amenity in amenities %}
+      <div class="checkbox">
+        <input
+          id="amenity-{{ amenity.amenity_id }}"
+          type="checkbox"
+          name="amenities"
+          value="{{ amenity.amenity_id }}"
+        >
+        <label for="amenity-{{ amenity.amenity_id }}">
+          {{ amenity.name }}
+        </label>
+      </div>
+    {% endfor %}
+    
     <h4>Ratings</h4>
 
     <div>

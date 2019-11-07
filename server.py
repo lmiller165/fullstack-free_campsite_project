@@ -6,7 +6,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, session, render_template, request, flash, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, Campsite, User, Rating, Review, Campsite_amenities, Amenity 
+from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity 
 
 
 app = Flask(__name__)
@@ -111,6 +111,8 @@ def add_campsite_form():
     #User_id pulled from session
     user_id = session.get("user_id")
 
+
+
     #Checking for user_id
     if not user_id:
         flash(f"You must be logged in to add a campsite")
@@ -119,7 +121,7 @@ def add_campsite_form():
         return redirect("/")
 
     else:
-        return render_template("add-campsite.html")
+        return render_template("add-campsite.html", amenities=Amenity.query.all())
 
 
 @app.route('/add-campsite', methods=['POST'])
@@ -158,22 +160,23 @@ def add_campsite():
                         user_id=user_id)
 
     amenities = request.form.getlist("amenities")
+    print("##################################")
+    print(amenities)
+    print("##################################")
 
-    for amenity in amenities:
-        new_campsite.campsite_amenities.append(amenity)
+    # statement = student_identifier.insert().values(class_id=cl1.id, user_id=sti1.id)
+    # db.session.execute(statement)
+    # db.session.commit()
 
+    for amenity_id in amenities:
 
-    # new_amenity = Campsite_amenities(electricity=electricity,
-    #                                   wifi=wifi,
-    #                                   showers=showers,
-    #                                   water=water,
-    #                                   toilets=toilets,
-    #                                   petfriendly=petfriendly,
-    #                                   tentfriendly=tentfriendly)
+        amenity = Amenity.query.get(int(amenity_id))
+        new_campsite.amenities.append(amenity)
+
 
 
     new_campsite.ratings.append(new_rating)
-    # new_campsite.campsite_amenities.append(new_amenity)
+
 
     #add all info to our db
     db.session.add(new_campsite)

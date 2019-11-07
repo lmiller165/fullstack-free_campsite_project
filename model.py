@@ -28,6 +28,10 @@ class Campsite(db.Model):
     user = db.relationship("User",
                             backref=db.backref("campsites",
                                                order_by=campsite_id))
+    amenities = db.relationship("Amenity",
+                                secondary="campsite_amenities",
+                                backref="campsites"
+                                )
 
 
     def __repr__(self):
@@ -117,7 +121,7 @@ class Review(db.Model):
                 review_description={self.review_description}>"""
 
 
-class Campsite_amenities(db.Model):
+class CampsiteAmenity(db.Model):
     """Table to link our amenities to our campsite"""
 
     __tablename__ = "campsite_amenities" 
@@ -128,19 +132,10 @@ class Campsite_amenities(db.Model):
     amenity_id = db.Column(db.Integer, db.ForeignKey('amenities.amenity_id'))
     campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
 
-    #Define relationships
-    amenity = db.relationship("Amenity",
-                            backref=db.backref("campsite_amenities",
-                                               order_by=campsite_amenities_id))
-    campsite = db.relationship("Campsite",
-                            backref=db.backref("campsite_amenities",
-                                               order_by=campsite_amenities_id))
-
     def __repr__(self):
         """Show helpful rating information when printed"""   
 
-        return f"""<amenity={self.amenity_id} 
-                campsite_id={self.campsite_id}>"""
+        return f"<CampsiteAmenity amenity={self.amenity_id} campsite_id={self.campsite_id}>"
 
 
 class Amenity(db.Model):
@@ -156,6 +151,7 @@ class Amenity(db.Model):
 
         return f"""<amenity_id={self.amenity_id} 
                 name={self.name}>"""
+
 
 
 ##############################################################################
