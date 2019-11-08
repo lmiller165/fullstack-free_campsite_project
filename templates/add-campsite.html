@@ -37,10 +37,8 @@
     <h4>Permit Info</h4>
 
     <div class="checkbox">
-      <label><input type="checkbox" name="yes" value="yes">Yes, you need a permit</label>
-    </div>
-    <div class="checkbox">
-      <label><input type="checkbox" name="no" value="no">No permit neccessary</label>
+      <label><input type="checkbox" name="permit" value="True">Yes, you need a permit</label><br>
+      <label><input type="checkbox" name="permit" value="False">No permit neccessary</label>
     </div>
 
     <div class="form-group">
@@ -52,7 +50,7 @@
     <h4>Campsite Amenities</h4>
 
     {% for amenity in amenities %}
-      <div class="checkbox">
+      <div class="checkbox container" >
         <input
           id="amenity-{{ amenity.amenity_id }}"
           type="checkbox"

@@ -63,7 +63,6 @@ def logout():
     flash("Logged Out.")
     return redirect("/")
 
-
 ############################# SIGN UP PROCESS ##################################
 
 @app.route('/sign-up', methods=['GET'])
@@ -92,15 +91,45 @@ def signup_process():
     flash(f"User {email} added.")
     return redirect("/")
 
-
 ############################### VIEW CAMPSITES #################################
 
 @app.route('/view-campsites', methods=['GET'])
 def list_campsites():
     """Show list of all campsites"""
 
-    return render_template("view-campsites.html")
+    campsites = Campsite.query.all()
 
+    return render_template("view-campsites.html", campsites=campsites)
+
+
+########################### VIEW CAMPSITE DETAILS ##############################
+
+@app.route('/campsite-details', methods=['GET'])
+def show_campsite_details():
+    """Show list of all campsites"""
+
+    campsite_name = request.args.get('campsite')
+    campsite = Campsite.query.filter_by(name=campsite_name).first()
+
+    amenities = campsite.amenities
+    ratings = campsite.ratings
+
+
+
+    return render_template("campsite-details.html", campsite=campsite,
+                                                    amenities=amenities,
+                                                    ratings=ratings)
+
+################################# REVIEW PAGE ##################################
+
+@app.route('/add-review', methods=['GET'])
+def show_review():
+    """Show list of all campsites"""
+
+    campsite_name = request.args.get('campsite')
+    campsite = Campsite.query.filter_by(name=campsite_name).first()
+
+    return render_template("add-review.html", campsite=campsite)
 
 ################################ ADD CAMPSITES #################################
 
@@ -110,8 +139,6 @@ def add_campsite_form():
 
     #User_id pulled from session
     user_id = session.get("user_id")
-
-
 
     #Checking for user_id
     if not user_id:
@@ -133,10 +160,8 @@ def add_campsite():
     lat = request.form["lat"]
     lon = request.form["lon"]
     description = request.form["description"]
-    if request.form.get("permit") == "Yes":
-        permit = True
+    permit = request.form["permit"]
     permit_info = request.form["permit_info"]
-
 
     #Ratings form varialbes 
     noise_level = int(request.form["noiselevel"])
@@ -159,29 +184,18 @@ def add_campsite():
                         privacy_level=privacy_level,
                         user_id=user_id)
 
+    #append ammenities to campsite
     amenities = request.form.getlist("amenities")
-    print("##################################")
-    print(amenities)
-    print("##################################")
-
-    # statement = student_identifier.insert().values(class_id=cl1.id, user_id=sti1.id)
-    # db.session.execute(statement)
-    # db.session.commit()
-
     for amenity_id in amenities:
 
         amenity = Amenity.query.get(int(amenity_id))
         new_campsite.amenities.append(amenity)
 
-
-
+    #append new rating to campsite
     new_campsite.ratings.append(new_rating)
-
 
     #add all info to our db
     db.session.add(new_campsite)
-
-    # db.session.add(new_amenity)
 
     db.session.commit()
 

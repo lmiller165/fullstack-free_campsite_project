@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container"
+
+    <h6>CAMPSITE DETAILS:</h6>
+    <h3>{{ campsite.name }}</h3>
+    <h5>{{ campsite.lat }} | {{ campsite.lon }}</h5>
+    <br>
+    <h4>Description:</h4>
+    <p>{{ campsite.description }}</p>
+    <br>
+    <h4>Amenities:</h4>
+        {% for amenity in amenities %}
+            <p>{{ amenity.name }}</p>
+        {% endfor %}
+    <br>
+    <h4>Ratings:</h4>
+        {% for rating in ratings %}
+            <p>Noise level: {{ rating.noise_level }}</p>
+            <p>Privacy level: {{ rating.privacy_level }}</p>
+            <p>Risk level: {{ rating.risk_level }}</p>
+        {% endfor %}
+    <br class="line">
+    <h4>Reviews:</h4>
+    <p>{{ campsite.reviews }}</p>
+
+</div>
+
+
+
+
+{% endblock %}

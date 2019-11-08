@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container">
+    <form action="/add-review" method="POST" class="container">
+        <h2>Add review for: {{ campsite.name }}</h2>
+        <br>
+        <h4>Review:</h4>
+
+        <div class="form-group">
+            <textarea class="form-control" name="description" rows="5" id="description"></textarea>
+        </div>
+        <br>
+        <h4>Ratings:</h4>
+
+        <div>
+          <h5>Noise level</h5>
+            <div class="radio inline">
+              <label><input type="radio" name="noiselevel" value="1">1</label>
+              <label><input type="radio" name="noiselevel" value="2">2</label>
+              <label><input type="radio" name="noiselevel" value="3">3</label>
+              <label><input type="radio" name="noiselevel" value="4">4</label>
+              <label><input type="radio" name="noiselevel" value="5">5</label>
+              <label><input type="radio" name="noiselevel" value="6">6</label>
+              <label><input type="radio" name="noiselevel" value="7">7</label>
+              <label><input type="radio" name="noiselevel" value="8">8</label>
+              <label><input type="radio" name="noiselevel" value="9">9</label>
+              <label><input type="radio" name="noiselevel" value="10">10</label>
+            </div>
+        </div>
+
+        <div>
+          <h5>Privacy level</h5>
+            <div class="radio inline">
+              <label><input type="radio" name="privacylevel" value="1">1</label>
+              <label><input type="radio" name="privacylevel" value="2">2</label>
+              <label><input type="radio" name="privacylevel" value="3">3</label>
+              <label><input type="radio" name="privacylevel" value="4">4</label>
+              <label><input type="radio" name="privacylevel" value="5">5</label>
+              <label><input type="radio" name="privacylevel" value="6">6</label>
+              <label><input type="radio" name="privacylevel" value="7">7</label>
+              <label><input type="radio" name="privacylevel" value="8">8</label>
+              <label><input type="radio" name="privacylevel" value="9">9</label>
+              <label><input type="radio" name="privacylevel" value="10">10</label>
+            </div>
+        </div>
+
+        <div>
+          <h5>Risk level</h5>
+            <div class="radio inline">
+              <label><input type="radio" name="risklevel" value="1">1</label>
+              <label><input type="radio" name="risklevel" value="2">2</label>
+              <label><input type="radio" name="risklevel" value="3">3</label>
+              <label><input type="radio" name="risklevel" value="4">4</label>
+              <label><input type="radio" name="risklevel" value="5">5</label>
+              <label><input type="radio" name="risklevel" value="6">6</label>
+              <label><input type="radio" name="risklevel" value="7">7</label>
+              <label><input type="radio" name="risklevel" value="8">8</label>
+              <label><input type="radio" name="risklevel" value="9">9</label>
+              <label><input type="radio" name="risklevel" value="10">10</label>
+            </div>
+        </div>
+    <br>
+    <div class="form-group">
+      <input type="submit" value="Add Review" class="btn-dark">
+    </div>
+
+    </form>
+</div>
+
+{% endblock %}
