@@ -99,37 +99,97 @@ def list_campsites():
 
     campsites = Campsite.query.all()
 
-    return render_template("view-campsites.html", campsites=campsites)
+    #User_id pulled from session
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+
+    return render_template("view-campsites.html", campsites=campsites,
+                                                  user=user)
 
 
 ########################### VIEW CAMPSITE DETAILS ##############################
 
 @app.route('/campsite-details', methods=['GET'])
 def show_campsite_details():
-    """Show list of all campsites"""
+    """Show single campsite details"""
 
+    #Campsite details
     campsite_name = request.args.get('campsite')
     campsite = Campsite.query.filter_by(name=campsite_name).first()
-
     amenities = campsite.amenities
     ratings = campsite.ratings
+    reviews = campsite.reviews
+
+    #User_id pulled from session
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
 
 
 
     return render_template("campsite-details.html", campsite=campsite,
                                                     amenities=amenities,
-                                                    ratings=ratings)
+                                                    ratings=ratings,
+                                                    user=user,
+                                                    reviews=reviews)
 
 ################################# REVIEW PAGE ##################################
 
 @app.route('/add-review', methods=['GET'])
 def show_review():
-    """Show list of all campsites"""
+    """Show add review form"""
 
     campsite_name = request.args.get('campsite')
     campsite = Campsite.query.filter_by(name=campsite_name).first()
 
-    return render_template("add-review.html", campsite=campsite)
+    #User_id pulled from session
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+
+    return render_template("add-review.html", campsite=campsite,
+                                              user=user)
+
+
+@app.route('/add-review', methods=['POST'])
+def add_review_process():
+    """Get information from review form page"""
+
+    campsite_name = request.form["campsite_name"]
+    campsite = Campsite.query.filter_by(name=campsite_name).first()
+    campsite_id = campsite.campsite_id
+    amenities = campsite.amenities
+    ratings = campsite.ratings
+
+
+    # Get form variables 
+    review = request.form["review"]
+    noise_level = int(request.form["noiselevel"])
+    privacy_level = int(request.form["privacylevel"])
+    risk_level = int(request.form["risklevel"])
+
+    #User_id pulled from session
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+
+    new_rating = Rating(noise_level=noise_level,
+                    risk_level=risk_level,
+                    privacy_level=privacy_level,
+                    user_id=user_id,
+                    campsite_id=campsite_id)
+
+    new_review = Review(user_id=user_id,
+                        campsite_id=campsite_id,
+                        review_description=review)
+
+    db.session.add(new_rating)
+    db.session.add(new_review)
+
+    db.session.commit()
+
+
+    return render_template("campsite-details.html", campsite=campsite,
+                                                    amenities=amenities,
+                                                    ratings=ratings,
+                                                    user=user)
 
 ################################ ADD CAMPSITES #################################
 
@@ -175,8 +235,8 @@ def add_campsite():
                         lat=lat, 
                         lon=lon, 
                         description=description,
-                        # permit=permit,
-                        # permit_info=permit_info,
+                        permit=permit,
+                        permit_info=permit_info,
                         user_id=user_id)
 
     new_rating = Rating(noise_level=noise_level,

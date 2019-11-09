@@ -25,7 +25,7 @@ class Campsite(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
     # Define relationships
-    user = db.relationship("User",
+    author = db.relationship("User",
                             backref=db.backref("campsites",
                                                order_by=campsite_id))
     amenities = db.relationship("Amenity",
@@ -77,7 +77,7 @@ class Rating(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
     # Define relationships
-    user = db.relationship("User",
+    author = db.relationship("User",
                             backref=db.backref("ratings",
                                                order_by=rating_id))
     campsite = db.relationship("Campsite",
@@ -101,13 +101,14 @@ class Review(db.Model):
 
     review_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     review_description = db.Column(db.String, nullable=False)
+    reviewed_at=db.Column(db.DateTime)
 
     #Foreign Keys
     campsite_id = db.Column(db.Integer, db.ForeignKey('campsites.campsite_id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
 
     # Define relationships
-    user = db.relationship("User",
+    author = db.relationship("User",
                             backref=db.backref("reviews",
                                                order_by=review_id))
     campsite = db.relationship("Campsite",

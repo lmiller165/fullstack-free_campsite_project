@@ -24,7 +24,10 @@
         {% endfor %}
     <br class="line">
     <h4>Reviews:</h4>
-    <p>{{ campsite.reviews }}</p>
+        {% for review in reviews %}
+            <h5>{{ review.user.fname}} {{ review.user.lname }} says:</h5>
+            <p>{{ review.review_description }}</p>
+        {% endfor %}
 
 </div>
 
