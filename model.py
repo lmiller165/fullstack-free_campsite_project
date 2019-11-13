@@ -14,9 +14,9 @@ class Campsite(db.Model):
     __tablename__ = "campsites"
 
     campsite_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    lat = db.Column(db.Float, nullable=False)
-    lon = db.Column(db.Float, nullable=False)
+    name = db.Column(db.String(), nullable=False)
+    lat = db.Column(db.Float(), nullable=False)
+    lon = db.Column(db.Float(), nullable=False)
     description = db.Column(db.String, nullable=False)
     permit = db.Column(db.Boolean, default=False)
     permit_info = db.Column(db.String)
@@ -48,10 +48,10 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    fname = db.Column(db.String(50), nullable=False)
-    lname = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(50), nullable=False, unique=True)
-    password = db.Column(db.String(50), nullable=False)
+    fname = db.Column(db.String(), nullable=False)
+    lname = db.Column(db.String(), nullable=False)
+    email = db.Column(db.String(), nullable=False, unique=True)
+    password = db.Column(db.String(), nullable=False)
 
 
     def __repr__(self):
