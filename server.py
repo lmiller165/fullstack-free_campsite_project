@@ -2,11 +2,10 @@
 """Free Camping Project."""
 
 from jinja2 import StrictUndefined
-
 from flask import Flask, session, render_template, request, flash, redirect
 from flask_debugtoolbar import DebugToolbarExtension
-
 from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity, CampsiteAmenity 
+import config
 
 
 app = Flask(__name__)
@@ -262,8 +261,6 @@ def add_campsite():
     new_campsite.ratings.append(new_rating)
 
     #add all info to our db
-    # db.session.add(new_campsite)
-
     db.session.commit()
 
     campsite_ams = CampsiteAmenity.query.filter(CampsiteAmenity.campsite_id==new_campsite.campsite_id).all()
@@ -271,6 +268,15 @@ def add_campsite():
 
     return redirect("/view-campsites")
 
+
+###################################  MAPBOX  ###################################
+@app.route('/map', methods=['GET'])
+def view_map():
+    """Show user map of campsites."""
+
+    token = config.mapbox_access_token
+
+    return render_template("map.html", token=token)
 
 ################################################################################
 
