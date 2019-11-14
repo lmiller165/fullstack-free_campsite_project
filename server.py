@@ -6,7 +6,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, session, render_template, request, flash, redirect
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity 
+from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity, CampsiteAmenity 
 
 
 app = Flask(__name__)
@@ -221,6 +221,10 @@ def add_campsite():
     lon = request.form["lon"]
     description = request.form["description"]
     permit = request.form["permit"]
+    if permit == "False":
+        permit = False
+    else:
+        permit = True
     permit_info = request.form["permit_info"]
 
     #Ratings form varialbes 
@@ -244,6 +248,9 @@ def add_campsite():
                         privacy_level=privacy_level,
                         user_id=user_id)
 
+    db.session.add(new_campsite)
+
+    db.session.commit()
     #append ammenities to campsite
     amenities = request.form.getlist("amenities")
     for amenity_id in amenities:
@@ -255,11 +262,14 @@ def add_campsite():
     new_campsite.ratings.append(new_rating)
 
     #add all info to our db
-    db.session.add(new_campsite)
+    # db.session.add(new_campsite)
 
     db.session.commit()
 
-    return render_template("view-campsites.html")
+    campsite_ams = CampsiteAmenity.query.filter(CampsiteAmenity.campsite_id==new_campsite.campsite_id).all()
+    print(campsite_ams)
+
+    return redirect("/view-campsites")
 
 
 ################################################################################

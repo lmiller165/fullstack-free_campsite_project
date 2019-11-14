@@ -50,7 +50,7 @@ class User(db.Model):
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     fname = db.Column(db.String(), nullable=False)
     lname = db.Column(db.String(), nullable=False)
-    email = db.Column(db.String(), nullable=False, unique=True)
+    email = db.Column(db.String(), nullable=False)
     password = db.Column(db.String(), nullable=False)
 
 
