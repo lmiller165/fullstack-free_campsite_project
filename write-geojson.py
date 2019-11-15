@@ -1,4 +1,5 @@
 #for more information on sesssion basics and create engine go to: https://docs.sqlalchemy.org/en/13/orm/session_basics.html
+import json
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity, CampsiteAmenity
@@ -26,35 +27,62 @@ def test_filterby_name():
 
 ################################################################################
 
-#Query for geojson data from the db "campsites"
+#Query for geojson data from the campsites db
 
-def get_points(name):
+def get_points(id): #update name to id after testing
     """will return a set of coordinates"""
 
-    campsite = session.query(Campsite).filter_by(name=name).first()
+    campsite = session.query(Campsite).filter_by(campsite_id=id).first()
     lat = campsite.lat
     lon = campsite.lon
-    point = Point((lat, lon))
-    print(point)
+    point = Point((lon, lat))
 
     return point
 
 
-point = Point((-115.81, 37.24))
+def get_properties(id):
+    """will return campsite title"""
+
+    campsite = session.query(Campsite).filter_by(campsite_id=id).first()
+    name = campsite.name
+    description = campsite.description
+
+    properties = {"title": name,
+                  "description": description}
+
+    return properties
 
 
-features = []
-features.append(Feature(geometry=point, properties={"country": "Spain"}))
 
-# add more features...
-# features.append(...)
+def write_geojson():
+    """writes a geojson file using campsites db"""
 
-feature_collection = FeatureCollection(features)
+    i = 1
+    features = []
+
+    while i < 5:
+
+        point = get_points(i) 
+        properties = get_properties(i)
+        features.append(Feature(geometry=point, 
+                                properties=properties))
+
+        i += 1
+
+        # add more features...
+        # features.append(...)
+
+    feature_collection = FeatureCollection(features)
+
+    # my_feature = Feature(geometry=Point((1.6432, -19.123)))
+
+    # my_other_feature = Feature(geometry=Point((-80.234, -22.532)))
+
+    # feature_collection = FeatureCollection([my_feature, my_other_feature])
 
 
-#write file with campsites
-# with open('myfile.geojson', 'w') as f:
-#    dump(feature_collection, f)
+    with open('map-markers.geojson', 'w') as f:
+       dump(feature_collection, f)
 
 
 
