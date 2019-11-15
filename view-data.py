@@ -68,8 +68,8 @@ for campsite in campsite_dict:
         if campsite['amenities'][amenity] == "Yes":
           features.append(amenity)
 
-for feature in features:
-    print(feature)
+    for feature in features:
+        print(feature)
 
 
 
