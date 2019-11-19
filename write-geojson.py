@@ -27,15 +27,17 @@ def test_filterby_name():
 
 ################################################################################
 
-#Query for geojson data from the campsites db
-
+#Queries for geojson data from the campsites db
 def get_points(id): #update name to id after testing
     """will return a set of coordinates"""
 
     campsite = session.query(Campsite).filter_by(campsite_id=id).first()
     lat = campsite.lat
     lon = campsite.lon
+    if lon > 0:
+        lon = lon * -1
     point = Point((lon, lat))
+    session.close()
 
     return point
 
@@ -49,18 +51,29 @@ def get_properties(id):
 
     properties = {'title': name,
                   'description': description}
+    session.close()
 
     return properties
 
 
+def get_total_campsites():
+    """Finds total count of campsites entered in my db"""
 
+    total = session.query(Campsite).count()
+    session.close()
+    
+    return total
+
+################################################################################
+#Write a geojson file using my db queries
 def write_geojson():
     """writes a geojson file using campsites db"""
 
     i = 1
+    total = get_total_campsites()
     features = []
 
-    while i < 5:
+    while i <= 500:
 
         point = get_points(i) 
         properties = get_properties(i)
@@ -69,17 +82,14 @@ def write_geojson():
 
         i += 1
 
+        # if you want to add more features do it here. Look up geojson and mapbox for more into.
         # add more features...
         # features.append(...)
 
     feature_collection = FeatureCollection(features)
-
     # my_feature = Feature(geometry=Point((1.6432, -19.123)))
-
     # my_other_feature = Feature(geometry=Point((-80.234, -22.532)))
-
     # feature_collection = FeatureCollection([my_feature, my_other_feature])
-
 
     with open('static/json/map-markers.geojson', 'w') as f:
        dump(feature_collection, f)

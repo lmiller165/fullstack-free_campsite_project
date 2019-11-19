@@ -107,6 +107,22 @@ def list_campsites():
                                                   user=user)
 
 
+@app.route('/view-campsites', methods=['POST'])
+def filter_campsites():
+    """Show list of all campsites"""
+
+    campsites = Campsite.query.all()
+
+    #User_id pulled from session
+    user_id = session.get("user_id")
+    user = User.query.filter_by(user_id=user_id).first()
+
+
+
+    return render_template("view-campsites.html", campsites=campsites,
+                                                  user=user)
+
+
 ########################### VIEW CAMPSITE DETAILS ##############################
 
 @app.route('/campsite-details', methods=['GET'])
@@ -286,13 +302,19 @@ def get_points():
 
     with open('static/json/map-markers.geojson', 'r') as f:
         geojson = f.read()
-    print(geojson, "\n\n\n\n\n\n\n")
     
     #if I print geojson type after this line of code it is a class_dict
     geojson = json.loads(geojson)
 
     return jsonify(geojson)
 
+@app.route('/map-test', methods=['GET'])
+def view_map_test():
+    """Show user map of campsites."""
+
+    # token = config.mapbox_access_token
+
+    return render_template("mapbox-test.html", token=config.mapbox_access_token)
 
 ################################################################################
 

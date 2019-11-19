@@ -70,6 +70,7 @@ var map = new mapboxgl.Map({
 
 
 $.get("/map_data", (res) => {
+
     const geojson = res;
     console.log(geojson);
 
@@ -77,7 +78,7 @@ $.get("/map_data", (res) => {
     //this code is pulled from mapbox
     geojson.features.forEach(function(marker) {
 
-      // create a HTML element for each feature
+      // this function ^^ creates a HTML element for each feature
       var el = document.createElement('div');
       el.className = 'marker';
 
@@ -89,8 +90,8 @@ $.get("/map_data", (res) => {
         .addTo(map);
 
     });
-
 });
+
 
 </script>
 

@@ -2,6 +2,31 @@
 
 {% block body %}
 
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- jQuery cdn -->
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+    <!-- mapbox links -->
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' /> 
+</head>
+
+
+<form action="/view-campsites" method="POST" class="container">
+
+    <h4>Search by state.</h4>
+
+    <div class="form-group">
+      <label>State:
+          <input type="text" name="state" required class="form-control">
+      </label>
+    </div>
 
 
 <div class="container">
@@ -20,6 +45,12 @@
         </ul>
     </div>
   {% endfor %}
+
+
+  <script>
+    //mapbox api token, stored in config
+    mapboxgl.accessToken = '{{ token }}';
+  </script>
 
 
 {% endblock %}
