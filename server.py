@@ -2,10 +2,11 @@
 """Free Camping Project."""
 
 from jinja2 import StrictUndefined
-from flask import Flask, session, render_template, request, flash, redirect
+from flask import Flask, session, render_template, request, flash, redirect, jsonify, request_finished
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity, CampsiteAmenity 
 import config
+import json
 
 
 app = Flask(__name__)
@@ -269,7 +270,7 @@ def add_campsite():
     return redirect("/view-campsites")
 
 
-###################################  MAPBOX  ###################################
+###################################  MAPBOX MARKERS #############################
 @app.route('/map', methods=['GET'])
 def view_map():
     """Show user map of campsites."""
@@ -277,6 +278,21 @@ def view_map():
     token = config.mapbox_access_token
 
     return render_template("map.html", token=token)
+
+
+@app.route('/map_data', methods=['GET'])
+def get_points():
+    """Show user map of campsites."""
+
+    with open('static/json/map-markers.geojson', 'r') as f:
+        geojson = f.read()
+    print(geojson, "\n\n\n\n\n\n\n")
+    
+    #if I print geojson type after this line of code it is a class_dict
+    geojson = json.loads(geojson)
+
+    return jsonify(geojson)
+
 
 ################################################################################
 
@@ -297,10 +313,6 @@ if __name__ == "__main__":
 
 ############################################################################
 
-#saving for later in case I need it
-#this code is from ashely after my add a campstie and other tables: 
-    # user = User.query.get(user_id)
-    # new_rating.user = user
 
 
 

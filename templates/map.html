@@ -1,14 +1,24 @@
 {% extends 'base.html' %}
 
 {% block body %}
+<!-- ----------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------- -->
 
 <head>
     <meta charset='utf-8' />
     <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!-- jQuery cdn -->
+    <script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+        crossorigin="anonymous"></script>
+    <!-- mapbox links -->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />  
+    <!-- mapbox css -->
     <style>
       body {
         margin: 0;
@@ -23,7 +33,7 @@
       }
 
       .marker {
-        background-image: url('static/mapbox-icon.png');
+        background-image: url('static/images/mapbox-icon.png');
         background-size: cover;
         width: 50px;
         height: 50px;
@@ -44,11 +54,13 @@
 <body>
 
 <div id='map'></div>
+<script src="static/js/marker-requests.js"></script>
 
 <script>
-
+//mapbox api token, stored in config
 mapboxgl.accessToken = '{{ token }}';
 
+//initialize map with mapbox 
 var map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/light-v10',
@@ -56,54 +68,36 @@ var map = new mapboxgl.Map({
   zoom: 3
 });
 
-var geojson = {
-  type: 'FeatureCollection',
-  features: [{
-    type: 'Feature',
-    geometry: {
-      type: 'Point',
-      coordinates: [-77.032, 38.913]
-    },
-    properties: {
-      title: 'Mapbox',
-      description: 'Washington, D.C.'
-    }
-  },
-  {
-    type: 'Feature',
-    geometry: {
-      type: 'Point',
-      coordinates: [-122.414, 37.776]
-    },
-    properties: {
-      title: 'Mapbox',
-      description: 'San Francisco, California'
-    }
-  }]
-};
 
-// add markers to map
-geojson.features.forEach(function(marker) {
+$.get("/map_data", (res) => {
+    const geojson = res;
+    console.log(geojson);
 
-  // create a HTML element for each feature
-  var el = document.createElement('div');
-  el.className = 'marker';
+    // add markers to map, "geojson" refrences a variable, each loops through geojson 
+    //this code is pulled from mapbox
+    geojson.features.forEach(function(marker) {
 
-  // make a marker for each feature and add to the map
-  new mapboxgl.Marker(el)
-    .setLngLat(marker.geometry.coordinates)
-    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
-    .addTo(map);
+      // create a HTML element for each feature
+      var el = document.createElement('div');
+      el.className = 'marker';
+
+      // make a marker for each feature and add to the map
+      new mapboxgl.Marker(el)
+        .setLngLat(marker.geometry.coordinates)
+        .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
+            .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+        .addTo(map);
+
+    });
 
 });
 
-
-
-
 </script>
 
+
+<script src="http://code.jquery.com/jquery.js"></script>
 </body>
+
 
 
 {% endblock %}

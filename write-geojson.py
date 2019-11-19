@@ -47,8 +47,8 @@ def get_properties(id):
     name = campsite.name
     description = campsite.description
 
-    properties = {"title": name,
-                  "description": description}
+    properties = {'title': name,
+                  'description': description}
 
     return properties
 
@@ -81,9 +81,20 @@ def write_geojson():
     # feature_collection = FeatureCollection([my_feature, my_other_feature])
 
 
-    with open('map-markers.geojson', 'w') as f:
+    with open('static/json/map-markers.geojson', 'w') as f:
        dump(feature_collection, f)
 
+
+def read_geojson():
+    """Reads geoson file"""
+
+    with open('static/json/map-markers.geojson', 'r') as f:
+        geojson = f.read()
+    
+    geojson = json.loads(geojson)
+    # print(type(geojson))
+
+    return geojson
 
 
 

@@ -1,10 +1,10 @@
-from model import Amenity, User, Campsite, db, connect_to_db
+from model import Amenity, User, Campsite, db, connect_to_db, CampsiteAmenity
 from faker import Faker
 import json
 import random
 
 #opening my json object from iOverlander:
-with open('iOverlander Places - 2019-11-12.json', 'r') as f:
+with open('json/iOverlander Places - 2019-11-12.json', 'r') as f:
   campsite_dict = json.load(f)
 
 def load_amenities():
