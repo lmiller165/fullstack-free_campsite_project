@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity, CampsiteAmenity
 from geojson import Point, Feature, FeatureCollection, dump
+from mapbox_requests import get_state, get_zipcode, get_city, get_country
 
 #connect to my db to allow for queries
 engine = create_engine('postgresql:///campsites')
@@ -28,10 +29,10 @@ def test_filterby_name():
 ################################################################################
 
 #Queries for geojson data from the campsites db
-def get_points(id): #update name to id after testing
+def get_points(camp_id): #update name to id after testing
     """will return a set of coordinates"""
 
-    campsite = session.query(Campsite).filter_by(campsite_id=id).first()
+    campsite = session.query(Campsite).filter_by(campsite_id=camp_id).first()
     lat = campsite.lat
     lon = campsite.lon
     if lon > 0:
@@ -42,15 +43,41 @@ def get_points(id): #update name to id after testing
     return point
 
 
-def get_properties(id):
+def get_coordinates(camp_id): #update name to id after testing
+    """will return a set of coordinates"""
+
+    campsite = session.query(Campsite).filter_by(campsite_id=camp_id).first()
+    lat = campsite.lat
+    lon = campsite.lon
+    if lon > 0:
+        lon = lon * -1
+    coordinates = [lon, lat]
+    session.close()
+
+    return coordinates
+
+
+def get_properties(camp_id):
     """will return campsite title"""
 
-    campsite = session.query(Campsite).filter_by(campsite_id=id).first()
+
+    campsite = session.query(Campsite).filter_by(campsite_id=camp_id).first()
     name = campsite.name
     description = campsite.description
 
+    #Implement these
+
+    # state = get_state(camp_id)
+    # zipcode = get_zipcode(camp_id)
+    # city = get_city(camp_id)
+
     properties = {'title': name,
-                  'description': description}
+                  'description': description,
+                  'state' : state,
+                  'zipcod' : zipcode
+                  #add city maybe
+                  }
+
     session.close()
 
     return properties
@@ -61,7 +88,7 @@ def get_total_campsites():
 
     total = session.query(Campsite).count()
     session.close()
-    
+
     return total
 
 ################################################################################
@@ -74,11 +101,17 @@ def write_geojson():
     features = []
 
     while i <= 500:
-
+        # i is campsite id here:
         point = get_points(i) 
+        # i is campsite id here:
         properties = get_properties(i)
+
+        #!!add get coordinates function here
+
         features.append(Feature(geometry=point, 
                                 properties=properties))
+
+        #add get_info_by_coordinates
 
         i += 1
 
@@ -91,14 +124,14 @@ def write_geojson():
     # my_other_feature = Feature(geometry=Point((-80.234, -22.532)))
     # feature_collection = FeatureCollection([my_feature, my_other_feature])
 
-    with open('static/json/map-markers.geojson', 'w') as f:
+    with open('static/json/all_campsites.geojson', 'w') as f:
        dump(feature_collection, f)
 
 
 def read_geojson():
     """Reads geoson file"""
 
-    with open('static/json/map-markers.geojson', 'r') as f:
+    with open('static/json/all_campsites.geojson', 'r') as f:
         geojson = f.read()
     
     geojson = json.loads(geojson)

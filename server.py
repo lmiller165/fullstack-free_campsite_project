@@ -7,6 +7,9 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity, CampsiteAmenity 
 import config
 import json
+import mapbox
+import requests
+from mapbox import Geocoder
 
 
 app = Flask(__name__)
@@ -38,7 +41,6 @@ def login_process():
 
     # query user info using email variable
     user = User.query.filter_by(email=email).first()
-
 
     if not user:
         flash("No such user")
@@ -103,8 +105,11 @@ def list_campsites():
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
 
+    token = config.mapbox_access_token
+
     return render_template("view-campsites.html", campsites=campsites,
-                                                  user=user)
+                                                  user=user,
+                                                  token=token)
 
 
 @app.route('/view-campsites', methods=['POST'])
@@ -117,10 +122,38 @@ def filter_campsites():
     user_id = session.get("user_id")
     user = User.query.filter_by(user_id=user_id).first()
 
+    token = config.mapbox_access_token
+
+    # Get form variables 
+    region = request.form["state"]
+
+    # Use mapbox API to fetch data
+    # california_request = requests.get("https://api.mapbox.com/geocoding/v5/mapbox.places/" + region + ".json?access_token=pk.eyJ1IjoibG1pbGxlcjE2NSIsImEiOiJjazI0MXN6ZjIwNDNoM21tbmI4dnFobjMxIn0.Xf5-STNNUuVlsRZalbZrXA")
+    geocoder = Geocoder()
+
+    print("\n\n\n\n\n")
+    response = geocoder.forward(region)
+    response.status_code
+    print("\n\n\n\n\n")
+    print(response)
+    response = response.json()
+    print("\n\n\n\n\n")
+    print(response)
+
+    # first = response['features'][0]
+    # print("\n\n\n\n\n")
+    # print(first['place name'])
+
+    # california_json  = california_request.json()
+    # print("\n\n\n\n\n")
+    # # print(california_json)
+    # # print("\n\n\n\n\n")
+
+    # print(california_json['features'][1])
+    # print("\n\n\n\n\n")
 
 
-    return render_template("view-campsites.html", campsites=campsites,
-                                                  user=user)
+    return redirect("/view-campsites")
 
 
 ########################### VIEW CAMPSITE DETAILS ##############################
@@ -307,6 +340,8 @@ def get_points():
     geojson = json.loads(geojson)
 
     return jsonify(geojson)
+
+
 
 @app.route('/map-test', methods=['GET'])
 def view_map_test():
