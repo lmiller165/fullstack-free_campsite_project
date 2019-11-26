@@ -10,6 +10,8 @@ import json
 import mapbox
 import requests
 from mapbox import Geocoder
+from write_geojson import write_geojson_file, read_geojson, write_geojson_dict
+from filter_results import filterby_state, filterby_zipcode, filterby_info, get_coordinates
 
 
 app = Flask(__name__)
@@ -139,19 +141,6 @@ def filter_campsites():
     response = response.json()
     print("\n\n\n\n\n")
     print(response)
-
-    # first = response['features'][0]
-    # print("\n\n\n\n\n")
-    # print(first['place name'])
-
-    # california_json  = california_request.json()
-    # print("\n\n\n\n\n")
-    # # print(california_json)
-    # # print("\n\n\n\n\n")
-
-    # print(california_json['features'][1])
-    # print("\n\n\n\n\n")
-
 
     return redirect("/view-campsites")
 
@@ -324,32 +313,50 @@ def add_campsite():
 def view_map():
     """Show user map of campsites."""
 
-    token = config.mapbox_access_token
-
-    return render_template("map.html", token=token)
+    return render_template("map.html", token=config.mapbox_access_token)
 
 
 @app.route('/map_data', methods=['GET'])
 def get_points():
     """Show user map of campsites."""
 
-    with open('static/json/map-markers.geojson', 'r') as f:
-        geojson = f.read()
-    
-    #if I print geojson type after this line of code it is a class_dict
-    geojson = json.loads(geojson)
+    # all campsites
+    geojson = read_geojson('static/json/all_campsites.geojson')
+    # geojson = write_geojson_dict()
+    # print(geojson)
+
+    # geojson = filterby_info(get_input)
 
     return jsonify(geojson)
 
 
+@app.route('/map-filter.json', methods=['GET'])
+def map_filter():
+    """Show user map of campsites with filter."""
 
-@app.route('/map-test', methods=['GET'])
-def view_map_test():
-    """Show user map of campsites."""
+    state = request.args.get("state")
+    # amenity = request.args.get("amenity")
 
-    # token = config.mapbox_access_token
+    #state filter
+    geojson = filterby_state(state)
+    # coordinates = get_coordinates(state)
 
-    return render_template("mapbox-test.html", token=config.mapbox_access_token)
+    print("\n\n\n")
+    print(state)
+    # print(amenity)
+    # print(coordinates)
+    print(geojson)
+
+    return jsonify(geojson)
+
+    #zipcode
+    # geojson = filterby_zipcode("99683")
+
+    #state
+    # geojson = filterby_state(state)
+
+    #city
+    # geojson = filterby_state("Winslow")
 
 ################################################################################
 
