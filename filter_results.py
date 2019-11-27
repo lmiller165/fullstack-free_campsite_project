@@ -145,6 +145,77 @@ def get_coordinates(state):
     return state_coord[state]
 
 
+def filterby_amenities_state(amenities_lst, state):
+    """Return the campsites with the same list of amenities"""
+
+    data = get_geojson('static/json/all_campsites.geojson')
+
+    features = []
+
+    new_amenities = ["Open"]
+    new_amenities.extend(amenities_lst)
+
+    if amenities_lst == ["Open"]:
+
+        for feature in data:
+        # print(feature['properties']['amenities'])
+
+            if state == feature['properties']['state'] and new_amenities == feature['properties']['amenities']:
+                features.append(feature)
+
+    else:
+        for feature in data:
+            # print(feature['properties']['amenities'])
+
+            if state == feature['properties']['state'] and new_amenities == feature['properties']['amenities']:
+                features.append(feature)
+
+
+    feature_collection = FeatureCollection(features)
+
+    return feature_collection
+
+
+def filterby_amenities(amenities_lst):
+    """Return the campsites with the same list of amenities"""
+
+    data = get_geojson('static/json/all_campsites.geojson')
+
+    features = []
+
+    new_amenities = ["Open"]
+    new_amenities.extend(amenities_lst)
+
+    for feature in data:
+    # print(feature['properties']['amenities'])
+        if new_amenities == feature['properties']['amenities']:
+            features.append(feature)
+
+    feature_collection = FeatureCollection(features)
+
+    return feature_collection
+
+
+
+    # if amenities_lst == ["Open"]:
+
+    #     for feature in data:
+    #         if new_amenities == feature['properties']['amenities']:
+    #             features.append(feature)
+
+    # else:
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

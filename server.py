@@ -5,13 +5,15 @@ from jinja2 import StrictUndefined
 from flask import Flask, session, render_template, request, flash, redirect, jsonify, request_finished
 from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity, CampsiteAmenity 
+from mapbox import Geocoder
+from write_geojson import write_geojson_file, read_geojson, write_geojson_dict
+from filter_results import filterby_state, filterby_zipcode, filterby_info, get_coordinates, filterby_amenities_state, filterby_amenities
 import config
 import json
 import mapbox
 import requests
-from mapbox import Geocoder
-from write_geojson import write_geojson_file, read_geojson, write_geojson_dict
-from filter_results import filterby_state, filterby_zipcode, filterby_info, get_coordinates
+from urllib.parse import urlparse
+import urllib.request
 
 
 app = Flask(__name__)
@@ -334,20 +336,56 @@ def get_points():
 def map_filter():
     """Show user map of campsites with filter."""
 
-    state = request.args.get("state")
-    # amenity = request.args.get("amenity")
+    # state = request.args.get("state")
+    # amenity_list = request.args.getlist("amenity")
 
-    #state filter
-    geojson = filterby_state(state)
-    # coordinates = get_coordinates(state)
+    data = request.args.get("data")
+
+    #get information from urllib, takes in jquery string from serialize
+    #more info read: https://docs.python.org/3/library/urllib.parse.html#urllib.parse.parse_qs
+    data = urllib.parse.parse_qs(data)
 
     print("\n\n\n")
-    print(state)
-    # print(amenity)
-    # print(coordinates)
-    print(geojson)
+    print(data)
+    # print(state)
+    # print(amenity_list)
+    print("\n\n\n")
 
-    return jsonify(geojson)
+
+    if len(data) == 1 and "state" in data.keys():
+        state = data["state"][0]
+        geojson = filterby_state(state)
+        print(geojson)
+        return jsonify(geojson)
+
+    elif len(data) == 1 and "amenity" in data.keys():
+        print("\n\n\n\n")
+        print("starting amenity search:")
+        amenity_list = data["amenity"]
+        geojson = filterby_amenities(amenity_list)
+        return jsonify(geojson)
+
+    else:
+        state = data["state"][0]
+        amenity_list = data["amenity"]
+        geojson = filterby_amenities_state(amenity_list, state)
+        return jsonify(geojson)
+
+
+
+    # length = len(amenity_list)
+    # if state != None and length == 0: 
+
+
+    # elif state == None and amenity_list != None:
+    #     geojson = filterby_amenities(amenity_list)
+    #     print(geojson)
+    #     return jsonify(geojson)
+
+    # else: 
+    #     geojson = filterby_amenities_state(amenity_list, state)
+    #     print(geojson)
+    #     return jsonify(geojson)
 
     #zipcode
     # geojson = filterby_zipcode("99683")

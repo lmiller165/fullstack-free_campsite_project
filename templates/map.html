@@ -51,9 +51,54 @@
           text-align: center;
           font-family: 'Open Sans', sans-serif;
         }
-/*      .map-data {
-          background-color: #f0f0f0;
-      }*/
+
+      .filter-group {
+        font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
+        font-weight: 600;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1;
+        border-radius: 3px;
+        width: 120px;
+        color: #fff;
+      }
+
+      .filter-group input[type="checkbox"]:first-child + label {
+        border-radius: 3px 3px 0 0;
+      }
+
+      .filter-group label:last-child {
+        border-radius: 0 0 3px 3px;
+        border: none;
+      }
+
+      .filter-group input[type="checkbox"] {
+        display: none;
+      }
+
+      .filter-group input[type="checkbox"] + label {
+        background-color: #3386c0;
+        display: block;
+        cursor: pointer;
+        padding: 10px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+      }
+
+      .filter-group input[type="checkbox"] + label {
+        background-color: #3386c0;
+        text-transform: capitalize;
+      }
+
+      .filter-group input[type="checkbox"] + label:hover,
+      .filter-group input[type="checkbox"]:checked + label {
+        background-color: #4ea0da;
+      }
+
+      .filter-group input[type="checkbox"]:checked + label:before {
+        content: "✔";
+        margin-right: 5px;
+      }
 
     </style>
 </head>
@@ -61,30 +106,51 @@
 
   <!-- Filter by state form: reference ajax demo from HB lectures -->
     <div class=container>
-      <form id="state-form" method="get" action="/map-filter.json">
+      <form id="filter-form" method="get" action="/map-filter.json">
         <div class="form-group">
           <label for="state-field"><h4>Search by state:</h4></label>
           <input type="text"
                  class="form-control"
                  name="state"
                  id="state-field"
-                 value="Type state">
+                 >
+                <!--  value="Type state" -->
         </div>
-<!--         <div class="checkbox inline" id="amenity-field">
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Open</label>
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Electricity</label>
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Wifi</label>
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Kitchen</label>
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Restaurant</label>
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Showers</label>
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Toilets</label>
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Big Rig Friendly</label>
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Tent Friendly</label>
-            <label><input type="checkbox" name="amenity" id="amenity-field" value="False">Pet Friendly</label>
-        </div> -->
+
+        <div class="form-group" for="amenity-field">
+              <div>
+
+<!--               <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Open">Open</label> -->
+              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Electricity">Electricity</label>
+              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Wifi">Wifi</label>
+              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Kitchen">Kitchen</label>
+              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Restaurant">Restaurant</label>
+              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Showers">Showers</label>
+              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Toilets">Toilets</label>
+              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Big Rig Friendly">Big Rig Friendly</label>
+              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Tent Friendly">Tent Friendly</label>
+              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Pet Friendly">Pet Friendly</label>
+<!--                 <label for="Open">Open</label>
+                <input type="checkbox" value="Open" id="Open" name="amenity">
+              </div>
+              <div>
+                <label for="Electricity">Electricity</label>
+                <input type="checkbox" value="Electricity" id="Electricity" name="amenity">
+              </div>
+              <div>
+                <label for="Wifi">Wifi</label>
+                <input type="checkbox" value="Wifi" id="Wifi" name="amenity">
+              </div>
+              <div></div>
+                <label for="Kitchen">Kitchen</label>
+                <input type="checkbox" value="Kitchen" id="Kitchen" name="amenity"> -->
+            </div>
+          </div>
+
         <div class="form-group">
           <input type="submit" class="btn-dark">
         </div>
+
       </form>
     </div>
 
@@ -96,12 +162,7 @@
       </form>
     </div>
 
-    </form>
-  </div>
-
 <div id='map'></div>
-<!-- ****set div to alter with ajax**** -->
-<div id='filter-group' class='filter-group'></div> 
 
 <!-- Marker javascript -->
 <script src="static/js/marker-requests.js"></script>
@@ -111,6 +172,7 @@
 mapboxgl.accessToken = '{{ token }}';
 
 //----------------------------------------------------------------------------//
+// STATE DICTIONARY
 const state_coord = {
                 "Alabama": [-86.791130, 32.806671],
                 "Alaska": [-152.404419, 61.370716],
@@ -166,10 +228,7 @@ const state_coord = {
 
     }
 //----------------------------------------------------------------------------//
-
-//****initialize with class filter
-var filterGroup = document.getElementById("filter-group");
-//initialize map with mapbox 
+// INITIALIZE MAPBOX MAP
 var map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/light-v10',
@@ -177,7 +236,8 @@ var map = new mapboxgl.Map({
   zoom: 3
 });
 
-
+//-----------------------------------------------------------------------------//
+// AJAX ON PAGE LOAD, LOADS GEOJSON AND MAP MARKERS
 $.get("/map_data", (res) => {
 
     const geojson = res;
@@ -201,21 +261,31 @@ $.get("/map_data", (res) => {
     });
 });
 
-
-  //--------------------------------------------------------------------------//
-  // AJAX TEST REQUEST FOR STATE FILTER
-
-  $('#state-form').on('submit', (evt) => {
+//----------------------------------------------------------------------------//
+// AJAX REQUEST FOR FILTERS
+  $('#filter-form').on('submit', (evt) => {
     evt.preventDefault();
 
     // Get user input from a form
+    // const formData = {
+    //   state: $('#state-field').val()
+    //   amenity: $('#amenity-field').checkbox($("form").serialize());
+    // };
     const formData = {
+      data: $('#filter-form').serialize() //why does serialize not work?
+    };
+
+    const state = {
       state: $('#state-field').val()
     };
 
-    console.log("FormData")
-    // console.log(formData.state);
-    coordinates = state_coord[formData.state];
+    console.log("FormData:");
+    console.log(formData);
+    console.log("end of form data");
+
+    coordinates = state_coord[state.state];
+    console.log("coordinates")
+    console.log(coordinates)
     // console.log(coordinates);
     //------------------------------------------------------------------------//
     // Send formData to the server (becomes a query string)
@@ -228,8 +298,16 @@ $.get("/map_data", (res) => {
     $( ".marker" ).remove();
     //------------------------------------------------------------------------//
     //jump to new map location based off of state query
-    //get coordinates from stat_dict.js, imported an object
-    map.jumpTo({ 'center': coordinates, 'zoom': 6 });
+    //get coordinates from stat_dict.js, move dict to another file later
+    if (coordinates) {
+      // block of code to be executed if the condition is true
+      map.jumpTo({ 'center': coordinates, 'zoom': 6 });
+    } else {
+      // block of code to be executed if the condition is false
+      map.jumpTo({ 'center': [-96, 37.8], 'zoom': 3 });
+    }
+
+
     //------------------------------------------------------------------------//
     // add markers to map, "geojson" refrences a variable, each loops through geojson 
     //this code is pulled from mapbox's API 
@@ -246,12 +324,12 @@ $.get("/map_data", (res) => {
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
         .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>')) //popup description
         .addTo(map);
-  });
-
-
+      });
     });
   });
 
+//----------------------------------------------------------------------------//
+// AJAX REQUEST TO CLEAR FILTERS
   $('#clear-filter').on('submit', (evt) => {
     evt.preventDefault();
 
@@ -275,15 +353,14 @@ $.get("/map_data", (res) => {
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
             .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
         .addTo(map);
-
     });
-});
+  });
 });
 
 </script>
 
-
 <script src="http://code.jquery.com/jquery.js"></script>
+
 </body>
 
 
