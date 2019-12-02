@@ -40,7 +40,9 @@
             <h5>{{ campsite.lat }} | {{ campsite.lon }}</h5>
             <p>{{ campsite.description }}</p>
             <a href="/campsite-details?campsite={{ campsite.name }}">View Details</a><span> | </span>
-            <a href="/add-review?campsite={{ campsite.name }}">Add Review</a>
+            <a href="/add-review?campsite={{ campsite.name }}">Add Review</a><span> | 
+            </span>
+            <a href="/add_to_trip/{{ campsite.name }}">Add to Trip</a><span>
         </ul>
     </div>
   {% endfor %}

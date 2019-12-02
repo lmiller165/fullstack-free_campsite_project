@@ -3,32 +3,24 @@
 {% block body %}
 
 <div class="container">
-  <h3>Welcome!</h3>
-  <p>You must be a registered user in order to add a campsite.</p>
-</div>
+<h1>Roam Free</h1>
+<p>We are a community making exploring the USA more accessible.</p>
 
+      <form id="filter-form" method="GET" action='/map' action='/map_data'>
+        <div class="form-group">
+          <label for="state-field"><h4>Where do you want to go?</h4></label>
+          <input type="text"
+                 class="form-control"
+                 name="state"
+                 id="state-field"
+                 placeholder="Search by state"
+                 >
+        </div>
 
-<form action="/" method="POST" class="container">
-
-    <div class="form-group">
-      <label>Email:
-          <input type="email" name="email" required class="form-control">
-      </label>
-    </div>
-
-    <div class="form-group">
-      <label>Password:
-          <input type="password" name="password" required class="form-control">
-      </label>
-    </div>
-
-    <div class="form-group">
-      <input type="submit" value="Log In" class="btn-dark">
-    </div>
-</form>
-
-<div class="container">
-    <a href="/sign-up">I would like to create an account</a>
+        <div class="form-group">
+          <input type="submit" value="Search" class="btn-dark">
+        </div>
+      </form>
 </div>
 
 {% endblock %}

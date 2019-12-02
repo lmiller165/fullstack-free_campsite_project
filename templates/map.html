@@ -32,6 +32,7 @@
         top: 300px;
         bottom: 0;
         width: 100%;
+
       }
 
       .marker {
@@ -113,6 +114,7 @@
                  class="form-control"
                  name="state"
                  id="state-field"
+                 value="{{ state }}" 
                  >
                 <!--  value="Type state" -->
         </div>
@@ -238,7 +240,10 @@ var map = new mapboxgl.Map({
 
 //-----------------------------------------------------------------------------//
 // AJAX ON PAGE LOAD, LOADS GEOJSON AND MAP MARKERS
-$.get("/map_data", (res) => {
+
+// state = '{{ state }}'
+
+  $.get("/map_data", {state: '{{ state }}'}, (res) => {
 
     const geojson = res;
     console.log(geojson);
@@ -251,11 +256,30 @@ $.get("/map_data", (res) => {
       var el = document.createElement('div');
       el.className = 'marker';
 
+
+      coordinates = state_coord['{{ state }}'];
+      console.log("coordinates")
+      console.log(coordinates)
+
+      //jump to new map location based off of state query
+      //get coordinates from stat_dict.js, move dict to another file later
+      if (coordinates) {
+      // block of code to be executed if the condition is true
+      map.jumpTo({ 'center': coordinates, 'zoom': 6 });
+      } else {
+      // block of code to be executed if the condition is false
+      map.jumpTo({ 'center': [-96, 37.8], 'zoom': 3 });
+      }
+
       // make a marker for each feature and add to the map
       new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
-            .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+          .setHTML(`<h3>${marker.properties.title}</h3>
+                    <p>${marker.properties.description}<p>
+                    <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
+                    <a href="/add-review?campsite=${marker.properties.title}"">Add Review</a>
+                    <a href="/add-review?campsite=${marker.properties.title}"">Add To Trip</a>`))
         .addTo(map);
 
     });
@@ -347,11 +371,16 @@ $.get("/map_data", (res) => {
       var el = document.createElement('div');
       el.className = 'marker';
 
+      const detail = "View Details"
+
       // make a marker for each feature and add to the map
       new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
-        .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
-            .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+        .setPopup(new mapboxgl.Popup({ offset: 25 })) // adding popups
+          // .setHTML('<h3>' + marker.properties.title + '</h3>')
+          // .setHTML('<p>' + marker.properties.description + '</p>')
+          // .setHTML('<h3><a href="' + marker.properties.title + '">' + marker.properties.title + '</a></h3>'))
+
         .addTo(map);
     });
   });

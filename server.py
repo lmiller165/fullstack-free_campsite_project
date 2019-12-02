@@ -8,6 +8,7 @@ from model import connect_to_db, db, Campsite, User, Rating, Review, Amenity, Ca
 from mapbox import Geocoder
 from write_geojson import write_geojson_file, read_geojson, write_geojson_dict
 from filter_results import filterby_state, filterby_zipcode, filterby_info, get_coordinates, filterby_amenities_state, filterby_amenities
+from twilio_helpers import text_trip
 import config
 import json
 import mapbox
@@ -26,16 +27,44 @@ app.secret_key = "SECRET"
 app.jinja_env.undefined = StrictUndefined
 
 
-############################## LOGIN PROCESS ###################################
+
 @app.route('/')
 def index():
-    """Homepage: Login or signup"""
+    """ Homepage, begin campsite filter"""
+
+    #User_id pulled from session
+    user_id = session.get("user_id")
+
+    #Checking for user_id
+    if not user_id:
+        return redirect("/welcome")
+
+    else:
+        return render_template("homepage.html")
+
+
+@app.route('/initial_filter', methods=['GET'])
+def show_initial_filter():
+
+    state = request.args.get("state")
+
+    #state
+    geojson = filterby_state(state)
+
+    return redirect('map')
+
+
+
+############################## LOGIN PROCESS ###################################
+@app.route('/welcome')
+def welcome_page():
+    """Welcome page: Login or signup"""
 
     #you can log in or choose to create an account from the homepage.
-    return render_template("homepage.html")
+    return render_template("welcome.html")
 
 
-@app.route('/', methods=['POST'])
+@app.route('/welcome', methods=['POST'])
 def login_process():
     """Logging in from homepage"""
 
@@ -67,7 +96,7 @@ def logout():
 
     del session["user_id"]
     flash("Logged Out.")
-    return redirect("/")
+    return redirect("/welcome")
 
 ############################# SIGN UP PROCESS ##################################
 
@@ -156,6 +185,8 @@ def show_campsite_details():
     #Campsite details
     campsite_name = request.args.get('campsite')
     campsite = Campsite.query.filter_by(name=campsite_name).first()
+    print("\n\n\n\n")
+    print(campsite)
     amenities = campsite.amenities
     ratings = campsite.ratings
     reviews = campsite.reviews
@@ -315,21 +346,37 @@ def add_campsite():
 def view_map():
     """Show user map of campsites."""
 
-    return render_template("map.html", token=config.mapbox_access_token)
+    state = request.args.get('state')
+    print("\n\n\n")
+    print("map")
+    print(state)
+
+    geojson=filterby_state(state)
+    geojson=jsonify(geojson)
+
+    return render_template("map.html", token=config.mapbox_access_token,
+                                        state=state,
+                                        geojson=geojson)
 
 
 @app.route('/map_data', methods=['GET'])
 def get_points():
     """Show user map of campsites."""
 
-    # all campsites
-    geojson = read_geojson('static/json/all_campsites.geojson')
-    # geojson = write_geojson_dict()
-    # print(geojson)
+    state = request.args.get("state")
+    print("\n\n\n")
+    print("map_data")
+    print(state)
+ 
+    if state == None:
+        # all campsites
+        geojson = read_geojson('static/json/all_campsites.geojson')
 
-    # geojson = filterby_info(get_input)
+    else:
+        geojson = filterby_state(state)
 
     return jsonify(geojson)
+
 
 
 @app.route('/map-filter.json', methods=['GET'])
@@ -345,12 +392,11 @@ def map_filter():
     #more info read: https://docs.python.org/3/library/urllib.parse.html#urllib.parse.parse_qs
     data = urllib.parse.parse_qs(data)
 
-    print("\n\n\n")
-    print(data)
-    # print(state)
-    # print(amenity_list)
-    print("\n\n\n")
-
+    # print("\n\n\n")
+    # print(data)
+    # # print(state)
+    # # print(amenity_list)
+    # print("\n\n\n")
 
     if len(data) == 1 and "state" in data.keys():
         state = data["state"][0]
@@ -371,22 +417,6 @@ def map_filter():
         geojson = filterby_amenities_state(amenity_list, state)
         return jsonify(geojson)
 
-
-
-    # length = len(amenity_list)
-    # if state != None and length == 0: 
-
-
-    # elif state == None and amenity_list != None:
-    #     geojson = filterby_amenities(amenity_list)
-    #     print(geojson)
-    #     return jsonify(geojson)
-
-    # else: 
-    #     geojson = filterby_amenities_state(amenity_list, state)
-    #     print(geojson)
-    #     return jsonify(geojson)
-
     #zipcode
     # geojson = filterby_zipcode("99683")
 
@@ -396,7 +426,125 @@ def map_filter():
     #city
     # geojson = filterby_state("Winslow")
 
-################################################################################
+###########################   ADD TO TRIP  #####################################
+
+@app.route("/trip")
+def show_trip():
+    """Display content of trip list."""
+
+    # Create a list to hold campsites to display later 
+    all_campsites = []
+
+    # Get the cart dictionary out of the session (or an empty one if none
+    # exists yet)
+    trip = session.get("trip", {})
+    # print("\n\n\n")
+    # print("trip route trip:")
+    # print(trip)
+
+
+    for campsite in trip.items():
+        campsite_name = campsite[0]
+        print("\n\n\n")
+        print(campsite_name)
+        campsite = Campsite.query.filter_by(name=campsite_name).first()
+        all_campsites.append(campsite)
+
+    # # Loop over the cart dictionary
+    # for campsite in trip.items():
+
+    #     print("\n\n\n")
+    #     print(campsite)
+
+
+    #     # Calculate the total cost for this type of melon and add it to the
+    #     # overall total for the order
+    #     total_cost = quantity * melon.price
+    #     order_total += total_cost
+
+    #     # Add the quantity and total cost as attributes on the Melon object
+    #     melon.quantity = quantity
+    #     melon.total_cost = total_cost
+
+    #     # Add the Melon object to our list
+    #     trip_list.append(melon)
+
+
+    return render_template("trip.html",
+                           trip=all_campsites)
+                           # total_stops=total_stops)
+
+
+
+@app.route("/add_to_trip/<campsite_name>")
+def add_to_trip(campsite_name):
+    """Add a campsite to trip session and redirect to trip page.
+
+    When a campsite is added to the trip, redirect browser to the trip
+    page and display a confirmation message: 'Melon successfully added to
+    cart'."""
+
+    #Campsite details
+    #query to get campsite information
+    #use it to build proper session dictionary
+    print("\n\n\n")
+    print(campsite_name)
+    print("\n\n\n")
+    campsite = Campsite.query.filter_by(name=campsite_name).first()
+    lat = campsite.lat
+    lon = campsite.lon
+    description = campsite.description
+
+    # Check if we have a trip in the session and if not, add one
+    # Also, bind the trip to the name 'trip' for easy reference below
+    if 'trip' in session:
+        trip = session['trip']
+    else:
+        trip = session['trip'] = {}
+
+    # - check if the desired camp name is in the trip, and if not, put it in
+    #structure of session:
+        #{name: [description, [lat, lon]]}
+    # if trip[campsite_name] not in trip:
+    trip[campsite_name] = [description, [lat, lon]]
+
+    # Print cart to the terminal for testing purposes
+    print("\n\n\n\n")
+    print("trip:")
+    print(trip)
+    print("\n\n\n\n")
+
+    # Show user success message on next page load
+    flash("Campsite successfully added to trip.")
+
+    # Redirect to shopping trip page
+    return redirect("/trip")
+
+
+
+@app.route('/send_trip', methods=['GET'])
+def send_trip():
+    """sends you a list of coordinates by campsite name"""
+
+    trip = session.get("trip", {})
+    all_campsites = []
+
+    for campsite in trip.items():
+        campsite_name = campsite[0]
+        print("\n\n\n")
+        print(campsite_name)
+        campsite = Campsite.query.filter_by(name=campsite_name).first()
+        all_campsites.append(campsite)
+
+    text_trip(all_campsites)
+
+    flash("Your trip has been sent to you")
+
+    return redirect("/trip")
+
+
+
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the point
