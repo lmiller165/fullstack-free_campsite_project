@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+    <div class = "container">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Campsite</th>
+            <th>Location</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for campsite in trip %}
+        <tr>
+            <td>{{ campsite.name }}</td>
+            <td>{{ campsite.lat }} | {{ campsite.lon }}</td>
+            <td>{{ campsite.description }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/send_trip" class="btn btn-large btn-primary">Text me my trip</a>
+
+    </div>
+
+{% endblock %}

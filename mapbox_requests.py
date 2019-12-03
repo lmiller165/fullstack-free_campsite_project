@@ -43,10 +43,18 @@ def get_place_info(camp_id):
 def get_state(camp_id):
     """retrieves state from campsite coordinates"""
 
+    #need to update to retrieve cleaner data by building out more conditionals
+    #to handle varied outputs by mapbox.
     place_info = get_place_info(camp_id)
-    state = place_info[1]
-    state = state.split()
-    state = state[0]
+    # print(place_info)
+    # print(type(place_info))
+
+    if len(place_info) < 2:
+        state = "United States"
+    else:
+        state = place_info[1]
+        state = state.split()
+        state = state[0]
 
     return state
 
@@ -73,13 +81,14 @@ def get_zipcode(camp_id):
     """retrieves state from campsite coordinates"""
 
     place_info = get_place_info(camp_id)
-    zipcode = place_info[1]
-    zipcode = zipcode.split()
 
-    if len(zipcode)< 2: 
+    if len(place_info) < 2:
         zipcode = None
-    else:    
-        zipcode = zipcode[1]
+
+    else:
+        zipcode = place_info[1]
+        zipcode = zipcode.split()   
+        zipcode = zipcode[0]
 
     # print("city:", place_info[0])
     # print("State & Zip:", place_info[1])

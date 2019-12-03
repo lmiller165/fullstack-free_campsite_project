@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container">
+  <h3>Welcome!</h3>
+  <p>You must be a registered user in order to add a campsite.</p>
+</div>
+
+
+<form action="/" method="POST" class="container">
+
+    <div class="form-group">
+      <label>Email:
+          <input type="email" name="email" required class="form-control">
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Password:
+          <input type="password" name="password" required class="form-control">
+      </label>
+    </div>
+
+    <div class="form-group">
+      <input type="submit" value="Log In" class="btn-dark">
+    </div>
+</form>
+
+<div class="container">
+    <a href="/sign-up">I would like to create an account</a>
+</div>
+
+{% endblock %}

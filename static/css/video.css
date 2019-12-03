@@ -1,0 +1,40 @@
+/* Style the video: 100% width and height to cover the entire window */
+#myVideo {
+  width: 100%;
+  min-height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
+}
+
+/* Add some content at the bottom of the video/page */
+.content {
+
+}
+
+.overlayText {
+  position:absolute;
+  top:30%;
+  left:35%;
+  z-index:1;
+}
+
+.video-transparent {
+  background: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
+  font-size: 1.2em;
+  z-index: 100;
+}
+
+/* Style the button used to pause/play the video */
+#myBtn {
+  width: 200px;
+  font-size: 18px;
+  padding: 10px;
+  border: none;
+  background: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+#myBtn:hover {
+  background: #ddd;
+  color: black;
+}

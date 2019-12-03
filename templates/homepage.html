@@ -2,25 +2,89 @@
 
 {% block body %}
 
-<div class="container">
-<h1>Roam Free</h1>
-<p>We are a community making exploring the USA more accessible.</p>
+<head>
+  <!-- Load my form stylesheet -->
+  <link rel="stylesheet" href="/static/css/form.css">
+    <!-- Load my vido stylesheet -->
+  <link rel="stylesheet" href="/static/css/video.css">
+  <!-- All the files that are required for interactive form and spin arrow -->
+  <!-- form styling code is pulled from here: https://bootsnipp.com/snippets/X04B0 -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
 
-      <form id="filter-form" method="GET" action='/map' action='/map_data'>
-        <div class="form-group">
-          <label for="state-field"><h4>Where do you want to go?</h4></label>
-          <input type="text"
-                 class="form-control"
-                 name="state"
-                 id="state-field"
-                 placeholder="Search by state"
-                 >
-        </div>
+</head>
 
-        <div class="form-group">
-          <input type="submit" value="Search" class="btn-dark">
+<div class="header video-transparent">
+  <!-- The video -->
+  <video autoplay muted loop id="myVideo">
+    <source src="/static/images/Slow-Fire.mp4" type="video/mp4">
+  </video>
+  <!-- end of video content -->
+
+  <!-- Where all the magic happens -->
+  <!-- LOGIN FORM -->
+  <div class="overlayText">
+    <form id="filter-form" method="GET" action='/map' action='/map_data'>
+      <div class="text-center" style="padding:50px 0">
+        <div class="logo">Let's see the world. Together.</div>
+        <!-- Main Form -->
+        <div class="login-form-1">
+          <form id="login-form" class="text-left">
+            <div class="login-form-main-message"></div>
+            <div class="main-login-form">
+              <div class="login-group">
+                <div class="form-group">
+                  <label for="lg_username" class="sr-only">Search State</label>
+                  <input type="text"
+                         class="form-control"
+                         name="state"
+                         id="state-field"
+                         placeholder="Where will you sleep tonight?"
+                         >
+                </div>
+      <!--           <div class="form-group">
+                  <label for="lg_password" class="sr-only">Password</label>
+                  <input type="password" class="form-control" id="lg_password" name="lg_password" placeholder="password">
+                </div> -->
+      <!--           <div class="form-group login-group-checkbox">
+                  <input type="checkbox" id="lg_remember" name="lg_remember">
+                  <label for="lg_remember">remember</label>
+                </div> -->
+              </div>
+              <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+            </div>
+            <div class="etc-login-form">
+              <p>not logged in? <a href="#">click here</a></p>
+              <p>new user? <a href="#">create new account</a></p>
+            </div>
+          </form>
         </div>
-      </form>
+        <!-- end:Main Form -->
+      </div>
+    </form>
+  </div>
 </div>
+
+<!-- This is javascript for my video, will probably remove play/pause functionality. Add button back in html if you want this later -->
+<!-- <script>
+// Get the video
+var video = document.getElementById("myVideo");
+
+// Get the button
+var btn = document.getElementById("myBtn");
+
+// Pause and play the video, and change the button text
+function myFunction() {
+  if (video.paused) {
+    video.play();
+    btn.innerHTML = "Pause";
+  } else {
+    video.pause();
+    btn.innerHTML = "Play";
+  }
+}
+</script> -->
+
+
 
 {% endblock %}

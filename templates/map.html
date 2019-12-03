@@ -1,170 +1,98 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<!-- ----------------------------------------------------------------------- -->
-<!-- ----------------------------------------------------------------------- -->
-<!-- ----------------------------------------------------------------------- -->
 
 <head>
-    <meta charset='utf-8' />
-    <title></title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <!-- jQuery cdn -->
-    <script
-        src="https://code.jquery.com/jquery-3.4.1.js"
-        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-        crossorigin="anonymous"></script>
-    <!-- mapbox links -->
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
-<!--     <script type="text/javascript" src="stat_dict.js"></script>  -->
-<!--     <script type="text/javascript" src="second.js"></script>  -->
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />  
-    <!-- mapbox css -->
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
-
-      #map {
-        position: absolute;
-        top: 300px;
-        bottom: 0;
-        width: 100%;
-
-      }
-
-      .marker {
-        background-image: url('static/images/mapbox-icon.png');
-        background-size: cover;
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-
-      .mapboxgl-popup {
-          max-width: 200px;
-        }
-
-      .mapboxgl-popup-content {
-          text-align: center;
-          font-family: 'Open Sans', sans-serif;
-        }
-
-      .filter-group {
-        font: 12px/20px "Helvetica Neue", Arial, Helvetica, sans-serif;
-        font-weight: 600;
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 1;
-        border-radius: 3px;
-        width: 120px;
-        color: #fff;
-      }
-
-      .filter-group input[type="checkbox"]:first-child + label {
-        border-radius: 3px 3px 0 0;
-      }
-
-      .filter-group label:last-child {
-        border-radius: 0 0 3px 3px;
-        border: none;
-      }
-
-      .filter-group input[type="checkbox"] {
-        display: none;
-      }
-
-      .filter-group input[type="checkbox"] + label {
-        background-color: #3386c0;
-        display: block;
-        cursor: pointer;
-        padding: 10px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-      }
-
-      .filter-group input[type="checkbox"] + label {
-        background-color: #3386c0;
-        text-transform: capitalize;
-      }
-
-      .filter-group input[type="checkbox"] + label:hover,
-      .filter-group input[type="checkbox"]:checked + label {
-        background-color: #4ea0da;
-      }
-
-      .filter-group input[type="checkbox"]:checked + label:before {
-        content: "✔";
-        margin-right: 5px;
-      }
-
-    </style>
+  <meta charset='utf-8' />
+  <title></title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <!-- jQuery cdn -->
+  <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"></script>
+  <!-- mapbox links -->
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />  
+  <!-- mapbox css -->
+  <link rel="stylesheet" href="/static/css/map.css">
 </head>
-  <body>
 
-  <!-- Filter by state form: reference ajax demo from HB lectures -->
-    <div class=container>
-      <form id="filter-form" method="get" action="/map-filter.json">
-        <div class="form-group">
-          <label for="state-field"><h4>Search by state:</h4></label>
-          <input type="text"
-                 class="form-control"
-                 name="state"
-                 id="state-field"
-                 value="{{ state }}" 
-                 >
-                <!--  value="Type state" -->
-        </div>
+<body>
+  <section class="h-100 mx-2 full-columns container-fluid">
+    <div class="row h-100">
+      <aside class="col-4 h-100 overflow-y bg-light d-flex justify-content-center map-info">
+        <div class="container my-4">
+          <p class="lead">
+            <!-- This is the start of my filtering form  -->
+            <form id="filter-form" method="get" action="/map-filter.json">
+              <!-- State text box -->
+              <div class="form-group">
+                <label for="state-field"><h4>Search by state:</h4></label>
+                <input type="text"
+                       class="form-control"
+                       name="state"
+                       id="state-field"
+                       value="{{ state }}">
+              </div>
+              <!-- Amenities checklist -->
+              <div class="form-group" for="amenity-field">
+                    <div>
+                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Electricity">Electricity</label>
+                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Wifi">Wifi</label>
+                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Kitchen">Kitchen</label>
+                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Restaurant">Restaurant</label>
+                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Showers">Showers</label>
+                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Toilets">Toilets</label>
+                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Big Rig Friendly">Big Rig Friendly</label>
+                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Tent Friendly">Tent Friendly</label>
+                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Pet Friendly">Pet Friendly</label>
+                  </div>
+                </div>
+                <!-- Submit button -->
+                <div class="form-group">
+                  <input type="submit" class="btn-dark">
+                </div>
+            </form>
+            <!-- This is the end of my filtering form  -->
 
-        <div class="form-group" for="amenity-field">
-              <div>
+            <!-- Clear form button -->
+            <p class="lead">
+                <form id="clear-filter" method="get" action="/map_data">
+                  <div class="form-group">
+                    <input type="submit" class="btn-dark" value="Clear filters">
+                  </div>
+                </form>
+            </p>
+            <!-- End of clear form  -->
 
-<!--               <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Open">Open</label> -->
-              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Electricity">Electricity</label>
-              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Wifi">Wifi</label>
-              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Kitchen">Kitchen</label>
-              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Restaurant">Restaurant</label>
-              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Showers">Showers</label>
-              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Toilets">Toilets</label>
-              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Big Rig Friendly">Big Rig Friendly</label>
-              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Tent Friendly">Tent Friendly</label>
-              <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Pet Friendly">Pet Friendly</label>
-<!--                 <label for="Open">Open</label>
-                <input type="checkbox" value="Open" id="Open" name="amenity">
-              </div>
-              <div>
-                <label for="Electricity">Electricity</label>
-                <input type="checkbox" value="Electricity" id="Electricity" name="amenity">
-              </div>
-              <div>
-                <label for="Wifi">Wifi</label>
-                <input type="checkbox" value="Wifi" id="Wifi" name="amenity">
-              </div>
-              <div></div>
-                <label for="Kitchen">Kitchen</label>
-                <input type="checkbox" value="Kitchen" id="Kitchen" name="amenity"> -->
+            <!-- Show trip. Set up ajax call.-->
+            <div class="lead trip-details">
+                {% for campsite in trip %}
+                  <div>
+                      <h4>{{ campsite.name }}</h4>
+                      <p>{{ campsite.lat }} | {{ campsite.lon }}</p>
+                  </div>
+                  {% endfor %}
+
+                  <a href="/send_trip" class="btn btn-large btn-primary">Text me my trip</a>
             </div>
-          </div>
-
-        <div class="form-group">
-          <input type="submit" class="btn-dark">
+          </p>
         </div>
-
-      </form>
-    </div>
-
-    <div class=container>
-      <form id="clear-filter" method="get" action="/map_data">
-        <div class="form-group">
-          <input type="submit" class="btn-dark" value="Clear filters">
+      </aside>
+      <main class="col h-100 map-body">
+        <div class="container py-4 content">
+          <p>
+            <!-- Map div to show map -->
+            <div id='map'></div>
+          </p>
         </div>
-      </form>
+      </main>
     </div>
+  </section>
 
-<div id='map'></div>
+<!--------------------------------------------------------------------------->
 
 <!-- Marker javascript -->
 <script src="static/js/marker-requests.js"></script>
@@ -278,8 +206,8 @@ var map = new mapboxgl.Map({
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <p>${marker.properties.description}<p>
                     <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
-                    <a href="/add-review?campsite=${marker.properties.title}"">Add Review</a>
-                    <a href="/add-review?campsite=${marker.properties.title}"">Add To Trip</a>`))
+                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>
+                    <a href="/add_to_trip/${marker.properties.title}">Add To Trip</a>`))
         .addTo(map);
 
     });
@@ -346,7 +274,11 @@ var map = new mapboxgl.Map({
       new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
-        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>')) //popup description
+          .setHTML(`<h3>${marker.properties.title}</h3>
+                    <p>${marker.properties.description}<p>
+                    <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
+                    <a href="/add-review?campsite=${marker.properties.title}"">Add Review</a>
+                    <a href="/add-review?campsite=${marker.properties.title}"">Add To Trip</a>`))
         .addTo(map);
       });
     });
@@ -376,11 +308,12 @@ var map = new mapboxgl.Map({
       // make a marker for each feature and add to the map
       new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
-        .setPopup(new mapboxgl.Popup({ offset: 25 })) // adding popups
-          // .setHTML('<h3>' + marker.properties.title + '</h3>')
-          // .setHTML('<p>' + marker.properties.description + '</p>')
-          // .setHTML('<h3><a href="' + marker.properties.title + '">' + marker.properties.title + '</a></h3>'))
-
+        .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
+          .setHTML(`<h3>${marker.properties.title}</h3>
+                    <p>${marker.properties.description}<p>
+                    <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
+                    <a href="/add-review?campsite=${marker.properties.title}"">Add Review</a>
+                    <a href="/add-review?campsite=${marker.properties.title}"">Add To Trip</a>`))
         .addTo(map);
     });
   });
@@ -393,5 +326,7 @@ var map = new mapboxgl.Map({
 </body>
 
 
-
 {% endblock %}
+
+
+

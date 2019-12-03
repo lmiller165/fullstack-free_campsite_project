@@ -113,7 +113,8 @@ def get_total_campsites():
 def write_geojson_file():
     """writes a geojson file using campsites db"""
 
-    i = 5500
+    #arbitrary set i to get num of campsites
+    i = 5000
     total = get_total_campsites()
     features = []
 
@@ -140,10 +141,29 @@ def write_geojson_file():
     return feature_collection
 
 
+
+def add_campsite_to_geojson(camp_id):
+    """appends campsite to the end of our geojson file"""
+
+    features = []
+
+    point = get_points(i) 
+    # i is campsite id here:
+    properties = get_properties(i)
+    features.append(Feature(geometry=point, 
+                            properties=properties))
+
+    feature_collection = FeatureCollection(features)
+
+    #learn how to append to a geojson file here. 
+    #add your campsite has been sent for review, we will alert you when it has been added.
+
+
+
 def write_geojson_dict():
     """writes a geojson file using campsites db"""
 
-    i = 5500
+    i = 5000
     total = get_total_campsites()
     features = []
 
@@ -165,14 +185,6 @@ def write_geojson_dict():
     # feature_collection = FeatureCollection([my_feature, my_other_feature])
     print(feature_collection)
     return feature_collection
-
-
-
-
-
-
-
-
 
 
 def read_geojson(file):

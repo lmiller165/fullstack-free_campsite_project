@@ -15,6 +15,7 @@ import mapbox
 import requests
 from urllib.parse import urlparse
 import urllib.request
+from show_trip import show_trip
 
 
 app = Flask(__name__)
@@ -41,17 +42,6 @@ def index():
 
     else:
         return render_template("homepage.html")
-
-
-@app.route('/initial_filter', methods=['GET'])
-def show_initial_filter():
-
-    state = request.args.get("state")
-
-    #state
-    geojson = filterby_state(state)
-
-    return redirect('map')
 
 
 
@@ -347,6 +337,10 @@ def view_map():
     """Show user map of campsites."""
 
     state = request.args.get('state')
+
+    if state == None:
+        state = "United States"
+
     print("\n\n\n")
     print("map")
     print(state)
@@ -354,8 +348,22 @@ def view_map():
     geojson=filterby_state(state)
     geojson=jsonify(geojson)
 
+    all_campsites = []
+
+    # Get the cart dictionary out of the session (or an empty one if none
+    # exists yet)
+    trip = session.get("trip", {})
+
+    for campsite in trip.items():
+        campsite_name = campsite[0]
+        # print("\n\n\n")
+        # print(campsite_name)
+        campsite = Campsite.query.filter_by(name=campsite_name).first()
+        all_campsites.append(campsite)
+
     return render_template("map.html", token=config.mapbox_access_token,
                                         state=state,
+                                        trip=all_campsites,
                                         geojson=geojson)
 
 
@@ -370,6 +378,9 @@ def get_points():
  
     if state == None:
         # all campsites
+        geojson = read_geojson('static/json/all_campsites.geojson')
+
+    elif state == "United States":
         geojson = read_geojson('static/json/all_campsites.geojson')
 
     else:
@@ -430,7 +441,7 @@ def map_filter():
 
 @app.route("/trip")
 def show_trip():
-    """Display content of trip list."""
+    """Display content of trip list. AKA trip cart"""
 
     # Create a list to hold campsites to display later 
     all_campsites = []
@@ -445,30 +456,10 @@ def show_trip():
 
     for campsite in trip.items():
         campsite_name = campsite[0]
-        print("\n\n\n")
-        print(campsite_name)
+        # print("\n\n\n")
+        # print(campsite_name)
         campsite = Campsite.query.filter_by(name=campsite_name).first()
         all_campsites.append(campsite)
-
-    # # Loop over the cart dictionary
-    # for campsite in trip.items():
-
-    #     print("\n\n\n")
-    #     print(campsite)
-
-
-    #     # Calculate the total cost for this type of melon and add it to the
-    #     # overall total for the order
-    #     total_cost = quantity * melon.price
-    #     order_total += total_cost
-
-    #     # Add the quantity and total cost as attributes on the Melon object
-    #     melon.quantity = quantity
-    #     melon.total_cost = total_cost
-
-    #     # Add the Melon object to our list
-    #     trip_list.append(melon)
-
 
     return render_template("trip.html",
                            trip=all_campsites)

@@ -1,0 +1,78 @@
+/*Sitewide  */
+
+.navbar {
+    background-color: #ffffff;
+    color: black;
+    border-radius: 0px;
+}
+
+#ubermelon-logo, #ubermelon-logo:hover, .navbar-dark .navbar-brand {
+    color: #151515;
+}
+
+.navbar-nav>li>a, .navbar-dark .navbar-nav .nav-link {
+    color: black;
+}
+
+html,body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #f8f9fa;
+/*  padding: 10px;*/
+  font-family: 'Varela Round';
+/*  overflow: hidden;*/
+}
+
+.map-body{
+    overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
+/*removes out margin padding on map page, may cause issues elsewhere?*/
+/*.container-fluid{
+    padding-left: 0;
+    padding-right: 0;
+}*/
+
+.overflow-y {
+  overflow-y: scroll !important;
+}
+
+
+.content {
+  margin-bottom: 25% !important;
+}
+
+.center-col{
+    width: 350px;
+}
+
+h1{
+    font-family: 'Varela Round', sans-serif;
+    font-size: 60px;
+}
+
+h4{
+    font-family: 'Varela Round', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+}
+
+p {
+    font-family: 'Varela Round', sans-serif;
+    font-size: 15px;
+}
+
+
+

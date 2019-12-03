@@ -1,37 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet"
-          href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css"/>
-    <link rel="stylesheet" href="/static/site.css"
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Camping</title>
+
+  <!-- Load Bootstrap 4 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Load Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+  <!-- Google Fonts font-family: 'Bree Serif', serif; font-family: 'Radley', serif; -->
+  <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Montserrat:300,500,800&display=swap" rel="stylesheet">
+
+  <!-- Google Fonts font-family: 'Varela Round', san-serif; -->
+  <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+
+  <!-- Load my stylesheet -->
+  <link rel="stylesheet" href="/static/css/style.css">
+
 </head>
 <body>
 
-<div class="navbar navbar-inverse navbar-static-top">
-    <div class="container">
 
-        <div class="navbar-header">
-            <!-- <img src="/static/img/ubermelon-logo.png"> -->
-            <a class="navbar-brand" href="/">Camp California</a>
-        </div>
+  <!-- Static navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
 
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="/view-campsites">View Campsites</a></li>
-                <li><a href="/add-campsite">Add Campsite</a></li>
-                <li><a href="/trip">My Trip</a></li>
-<!--                 <li><a href="/">Log In</a></li> -->
-<!--                 <li><a href="/logout">Log Out</a></li> -->
-                {% if "user_id" in session %}
-                  <li><a href="/logout">Logout</a></li>
-                {% else %}
-                  <li><a href="/">Login</a></li>
-                {% endif %}
-            </ul>
-        </div>
+    <a id="ubermelon-logo" class="navbar-brand" href="/">Free to roam</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- If i want nav items on the right side of my project -->
+<!--       <ul class="navbar-nav mr-auto">
+      </ul> -->
+
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/view-campsites">View Campsites</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/map">Map</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/add-campsite">Add Campsite</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/trip">My Trip</a>
+        </li>
+        {% if "user_id" in session %}
+        <li class="nav-item">
+          <a class="nav-link" href="/logout">Logout</a></li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/welcome">Login</a></li>
+        {% endif %}
+      </ul>
     </div>
-</div>
+
+  </nav>
+
 
 {% for flash in get_flashed_messages() %}
   {{ flash }}
