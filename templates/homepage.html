@@ -14,21 +14,22 @@
 
 </head>
 
-<div class="header video-transparent">
+
+<!-- <div class="header video-transparent"> -->
   <!-- The video -->
-  <video autoplay muted loop id="myVideo">
+<!--   <video autoplay muted loop id="myVideo">
     <source src="/static/images/Slow-Fire.mp4" type="video/mp4">
-  </video>
+  </video> -->
   <!-- end of video content -->
 
   <!-- Where all the magic happens -->
   <!-- LOGIN FORM -->
-  <div class="overlayText">
+<!--   <div class="overlayText">
     <form id="filter-form" method="GET" action='/map' action='/map_data'>
       <div class="text-center" style="padding:50px 0">
-        <div class="logo">Let's see the world. Together.</div>
+        <div class="logo">Let's see the world. Together.</div>-->
         <!-- Main Form -->
-        <div class="login-form-1">
+<!--         <div class="login-form-1">
           <form id="login-form" class="text-left">
             <div class="login-form-main-message"></div>
             <div class="main-login-form">
@@ -42,14 +43,6 @@
                          placeholder="Where will you sleep tonight?"
                          >
                 </div>
-      <!--           <div class="form-group">
-                  <label for="lg_password" class="sr-only">Password</label>
-                  <input type="password" class="form-control" id="lg_password" name="lg_password" placeholder="password">
-                </div> -->
-      <!--           <div class="form-group login-group-checkbox">
-                  <input type="checkbox" id="lg_remember" name="lg_remember">
-                  <label for="lg_remember">remember</label>
-                </div> -->
               </div>
               <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
             </div>
@@ -58,10 +51,63 @@
               <p>new user? <a href="#">create new account</a></p>
             </div>
           </form>
-        </div>
+        </div>  -->
         <!-- end:Main Form -->
-      </div>
+ <!--      </div>
     </form>
+  </div>
+</div> -->
+
+
+
+
+<div>
+  <div id="outer">
+    <div id="home-top-video">
+      <video autoplay loop muted width="100%">
+        <source src="/static/images/Slow-Fire.mp4" type="video/mp4" /> Your browser does not support the video tag. We suggest you upgrade your browser.
+      </video>
+      <div id="home-text">
+            <!--         <div><img src="http://marquesslondon.herokuapp.com/images/logo.ee1689ee.png"></div>
+                    <h3>LIFESTYLE</h3> -->
+
+          <!-- Where all the magic happens -->
+          <!-- LOGIN FORM -->
+          <div class="overlayText">
+            <form id="filter-form" method="GET" action='/map' action='/map_data'>
+              <div class="text-center" style="padding:50px 0">
+                <div class="logo">Let's see the world. Together.</div>
+                <!-- Main Form -->
+                <div class="login-form-1">
+                  <form id="login-form" class="text-left">
+                    <div class="login-form-main-message"></div>
+                    <div class="main-login-form">
+                      <div class="login-group">
+                        <div class="form-group">
+                          <label for="lg_username" class="sr-only">Search State</label>
+                          <input type="text"
+                                 class="form-control"
+                                 name="state"
+                                 id="state-field"
+                                 placeholder="Where will you sleep tonight?"
+                                 >
+                        </div>
+                      </div>
+                      <button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+                    </div>
+                    <div class="etc-login-form">
+                      <p>not logged in? <a href="#">click here</a></p>
+                      <p>new user? <a href="#">create new account</a></p>
+                    </div>
+                  </form>
+                </div>
+                <!-- end:Main Form -->
+              </div>
+            </form>
+          </div>
+
+      </div>
+    </div>
   </div>
 </div>
 

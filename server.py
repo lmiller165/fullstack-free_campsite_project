@@ -67,17 +67,17 @@ def login_process():
 
     if not user:
         flash("No such user")
-        return redirect("/")
+        return redirect("/welcome")
 
     if user.password != password:
         flash("Incorrect password")
-        return redirect("/")
+        return redirect("/welcome")
 
     #saving user_id
     session["user_id"] = user.user_id
 
     flash("Logged in")
-    return redirect("/view-campsites")
+    return redirect("/")
 
 
 @app.route('/logout')
@@ -339,13 +339,12 @@ def view_map():
     state = request.args.get('state')
 
     if state == None:
-        state = "United States"
+        state = "Where do you want to go?"
+        geojson = read_geojson('static/json/all_campsites.geojson')
 
-    print("\n\n\n")
-    print("map")
-    print(state)
+    else: 
+        geojson=filterby_state(state)
 
-    geojson=filterby_state(state)
     geojson=jsonify(geojson)
 
     all_campsites = []
@@ -372,15 +371,15 @@ def get_points():
     """Show user map of campsites."""
 
     state = request.args.get("state")
-    print("\n\n\n")
-    print("map_data")
-    print(state)
+    # print("\n\n\n")
+    # print("map_data")
+    # print(state)
  
     if state == None:
         # all campsites
         geojson = read_geojson('static/json/all_campsites.geojson')
 
-    elif state == "United States":
+    elif state == "Where do you want to go?":
         geojson = read_geojson('static/json/all_campsites.geojson')
 
     else:
@@ -403,11 +402,6 @@ def map_filter():
     #more info read: https://docs.python.org/3/library/urllib.parse.html#urllib.parse.parse_qs
     data = urllib.parse.parse_qs(data)
 
-    # print("\n\n\n")
-    # print(data)
-    # # print(state)
-    # # print(amenity_list)
-    # print("\n\n\n")
 
     if len(data) == 1 and "state" in data.keys():
         state = data["state"][0]
@@ -469,7 +463,7 @@ def show_trip():
 
 @app.route("/add_to_trip/<campsite_name>")
 def add_to_trip(campsite_name):
-    """Add a campsite to trip session and redirect to trip page.
+    """Add a campsite to trip session and redirect to map page.
 
     When a campsite is added to the trip, redirect browser to the trip
     page and display a confirmation message: 'Melon successfully added to
@@ -478,9 +472,9 @@ def add_to_trip(campsite_name):
     #Campsite details
     #query to get campsite information
     #use it to build proper session dictionary
-    print("\n\n\n")
-    print(campsite_name)
-    print("\n\n\n")
+    # print("\n\n\n")
+    # print(campsite_name)
+    # print("\n\n\n")
     campsite = Campsite.query.filter_by(name=campsite_name).first()
     lat = campsite.lat
     lon = campsite.lon
@@ -496,19 +490,53 @@ def add_to_trip(campsite_name):
     # - check if the desired camp name is in the trip, and if not, put it in
     #structure of session:
         #{name: [description, [lat, lon]]}
-    # if trip[campsite_name] not in trip:
-    trip[campsite_name] = [description, [lat, lon]]
+    if trip[campsite_name] not in trip:
+        trip[campsite_name] = [description, [lat, lon]]
 
     # Print cart to the terminal for testing purposes
-    print("\n\n\n\n")
-    print("trip:")
-    print(trip)
-    print("\n\n\n\n")
+    # print("\n\n\n\n")
+    # print("trip:")
+    # print(trip)
+    # print("\n\n\n\n")
+
+    # Show user success message implement with timed styling if you have time
+    #before demo night. 
+    # flash("Campsite successfully added to trip.")
+    # print("\n\n\n")
+    # print("trip")
+    # print(trip)
+    # print("\n\n\n")
+    # print("Session trip")
+    # print(session['trip'])
+    # print("\n\n\n")
+
+    # Return the whole session
+    return session['trip']
+    # return redirect("/map")
+
+
+
+@app.route("/add_to_trip_cart/<campsite_name>")
+def add_to_trip_cart(campsite_name):
+    """Add a campsite to trip session and redirect to trip page."""
+
+    #for notes on this review above function.
+    campsite = Campsite.query.filter_by(name=campsite_name).first()
+    lat = campsite.lat
+    lon = campsite.lon
+    description = campsite.description
+
+    if 'trip' in session:
+        trip = session['trip']
+    else:
+        trip = session['trip'] = {}
+
+    trip[campsite_name] = [description, [lat, lon]]
 
     # Show user success message on next page load
     flash("Campsite successfully added to trip.")
 
-    # Redirect to shopping trip page
+    # Redirect to trip page
     return redirect("/trip")
 
 
@@ -522,8 +550,8 @@ def send_trip():
 
     for campsite in trip.items():
         campsite_name = campsite[0]
-        print("\n\n\n")
-        print(campsite_name)
+        # print("\n\n\n")
+        # print(campsite_name)
         campsite = Campsite.query.filter_by(name=campsite_name).first()
         all_campsites.append(campsite)
 
@@ -534,7 +562,66 @@ def send_trip():
     return redirect("/trip")
 
 
+@app.route('/clear_trip', methods=['GET'])
+def clear_trip():
+    """sends you a list of coordinates by campsite name"""
 
+    # trip = session.get("trip", {})
+    # # clear the trip session
+    # trip.clear()
+
+    del session["trip"]
+    flash("Trip Deleted.")
+
+    return redirect("/trip")
+
+
+@app.route('/trip_details.json', methods=['GET'])
+def get_trip_details():
+    """allows for ajax request to show trip"""
+
+    campsite_name = request.args.get('campsite')
+    print("\n\n\n")
+    print(campsite_name)
+
+    #for notes on this review above function.
+    campsite = Campsite.query.filter_by(name=campsite_name).first()
+    lat = campsite.lat
+    lon = campsite.lon
+    description = campsite.description
+
+    if 'trip' in session:
+        trip = session['trip']
+    else:
+        trip = session['trip'] = {}
+
+    trip[campsite_name] = [description, [lat, lon]]
+
+    # Show user success message on next page load
+    flash("Campsite successfully added to trip.")
+
+
+    campsites = {}
+
+    trip = session.get("trip", {})
+
+    for campsite in trip.items():
+        campsite_name = campsite[0]
+        campsite_location = campsite[1][1]
+        campsites[campsite_name] = campsite_location
+
+
+    # print("\n\n\n")
+    # print(campsite)
+    print("\n\n\n")
+    print(campsites)
+    print("\n\n\n")
+
+
+
+    return jsonify(campsites)
+
+    
 
 
 if __name__ == "__main__":

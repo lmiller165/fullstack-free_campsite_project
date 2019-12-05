@@ -18,7 +18,7 @@
 </head>
 
 
-<form action="/view-campsites" method="POST" class="container">
+<!-- <form action="/view-campsites" method="POST" class="container">
 
 
     <div class="form-group">
@@ -26,7 +26,7 @@
           <input type="text" name="state" required class="form-control">
       </label>
     </div>
-
+</form> -->
 
 <div class="container">
     <h1>All Campsites</h1>
@@ -42,7 +42,7 @@
             <a href="/campsite-details?campsite={{ campsite.name }}">View Details</a><span> | </span>
             <a href="/add-review?campsite={{ campsite.name }}">Add Review</a><span> | 
             </span>
-            <a href="/add_to_trip/{{ campsite.name }}">Add to Trip</a><span>
+            <a href="/add_to_trip_cart/{{ campsite.name }}">Add to Trip</a><span>
         </ul>
     </div>
   {% endfor %}

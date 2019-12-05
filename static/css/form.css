@@ -83,6 +83,7 @@ a:hover {
   color: #999999;
   border-radius: 8px;
   padding: 10px 20px;
+  width: 400px;
 }
 .login-group-checkbox {
   padding: 5px 0;
@@ -285,4 +286,5 @@ label:hover:before {
   color: #BEFFEF;
 /*  color: #aaaaaa;*/
   font-weight: bold;
+  width: 400px;
 }

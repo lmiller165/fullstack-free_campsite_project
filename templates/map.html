@@ -34,7 +34,7 @@
                        class="form-control"
                        name="state"
                        id="state-field"
-                       value="{{ state }}">
+                       placeholder="{{ state }}">
               </div>
               <!-- Amenities checklist -->
               <div class="form-group" for="amenity-field">
@@ -61,22 +61,40 @@
             <p class="lead">
                 <form id="clear-filter" method="get" action="/map_data">
                   <div class="form-group">
-                    <input type="submit" class="btn-dark" value="Clear filters">
+                    <input type="submit" class="link" value="Clear filters">
                   </div>
                 </form>
             </p>
+            <br>
             <!-- End of clear form  -->
-
-            <!-- Show trip. Set up ajax call.-->
+<!-- ----------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------- -->
+            <!-- div for ajax call -->
+<!--             <div class="trip-details">
+              <h4>Your Trip:</h4>
+              <ul id="populate-trip-list">
+              </ul>
+            </div> -->
+<!-- ----------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------- -->
+            <!-- Show trip. This uses jinja but entire page has to reload.-->
             <div class="lead trip-details">
+                <h5>Your adventure awaits: </h5>
+                <br>
                 {% for campsite in trip %}
                   <div>
-                      <h4>{{ campsite.name }}</h4>
+                      <h6>{{ campsite.name }}</h6>
                       <p>{{ campsite.lat }} | {{ campsite.lon }}</p>
+                      <!-- I want my ajax to append here! -->
                   </div>
                   {% endfor %}
+                  <div id="populate-trip-list">
+                  </div>
 
                   <a href="/send_trip" class="btn btn-large btn-primary">Text me my trip</a>
+                  <a href="/clear_trip">Clear trip</a>
             </div>
           </p>
         </div>
@@ -95,7 +113,7 @@
 <!--------------------------------------------------------------------------->
 
 <!-- Marker javascript -->
-<script src="static/js/marker-requests.js"></script>
+<!-- <script src="static/js/marker-requests.js"></script> -->
 
 <script>
 //mapbox api token, stored in config
@@ -168,13 +186,10 @@ var map = new mapboxgl.Map({
 
 //-----------------------------------------------------------------------------//
 // AJAX ON PAGE LOAD, LOADS GEOJSON AND MAP MARKERS
-
-// state = '{{ state }}'
-
   $.get("/map_data", {state: '{{ state }}'}, (res) => {
 
     const geojson = res;
-    console.log(geojson);
+    // console.log(geojson);
 
     // add markers to map, "geojson" refrences a variable, each loops through geojson 
     //this code is pulled from mapbox
@@ -184,19 +199,19 @@ var map = new mapboxgl.Map({
       var el = document.createElement('div');
       el.className = 'marker';
 
-
-      coordinates = state_coord['{{ state }}'];
-      console.log("coordinates")
-      console.log(coordinates)
+      console.log('{{ state }}');
+      // console.log("coordinates")
+      // console.log(coordinates)
 
       //jump to new map location based off of state query
       //get coordinates from stat_dict.js, move dict to another file later
-      if (coordinates) {
-      // block of code to be executed if the condition is true
-      map.jumpTo({ 'center': coordinates, 'zoom': 6 });
+      if ('{{ state }}' === "Where do you want to go?") {
+      // fixed logic: jump to center if no state. 
+        map.jumpTo({ 'center': [-96, 37.8], 'zoom': 3 });
       } else {
-      // block of code to be executed if the condition is false
-      map.jumpTo({ 'center': [-96, 37.8], 'zoom': 3 });
+        // find coordinates if state provided: 
+        const coordinates = state_coord['{{ state }}'];
+        map.jumpTo({ 'center': coordinates, 'zoom': 6 });
       }
 
       // make a marker for each feature and add to the map
@@ -207,7 +222,7 @@ var map = new mapboxgl.Map({
                     <p>${marker.properties.description}<p>
                     <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
                     <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>
-                    <a href="/add_to_trip/${marker.properties.title}">Add To Trip</a>`))
+                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button>`))
         .addTo(map);
 
     });
@@ -258,8 +273,6 @@ var map = new mapboxgl.Map({
       // block of code to be executed if the condition is false
       map.jumpTo({ 'center': [-96, 37.8], 'zoom': 3 });
     }
-
-
     //------------------------------------------------------------------------//
     // add markers to map, "geojson" refrences a variable, each loops through geojson 
     //this code is pulled from mapbox's API 
@@ -278,7 +291,7 @@ var map = new mapboxgl.Map({
                     <p>${marker.properties.description}<p>
                     <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
                     <a href="/add-review?campsite=${marker.properties.title}"">Add Review</a>
-                    <a href="/add-review?campsite=${marker.properties.title}"">Add To Trip</a>`))
+                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button>`))
         .addTo(map);
       });
     });
@@ -312,16 +325,89 @@ var map = new mapboxgl.Map({
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <p>${marker.properties.description}<p>
                     <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
-                    <a href="/add-review?campsite=${marker.properties.title}"">Add Review</a>
-                    <a href="/add-review?campsite=${marker.properties.title}"">Add To Trip</a>`))
+                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>
+                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button>`))
         .addTo(map);
     });
   });
 });
 
+//----------------------------------------------------------------------------//
+// AJAX REQUEST TO SHOW TRIP IN SIDEBAR
+
+// use this function to update your html div
+// function updateTrip(results) {
+
+//     console.log(results)
+//     $('trip-details').html("<p>" + results.campsite_name + "</p>");
+// }
+
+
+// function addTrip(evt) {
+//     evt.preventDefault();
+
+//     let formInputs = {
+//         "campsite_name": ${marker.properties.title}
+//     };
+
+//     console.log("addTrip formInputs:")
+//     console.log(formInputs)
+
+//     $.post("/trip_details.json", formInputs, updateTrip);
+// }
+
+// //actual request using the add trip:
+// $("#add_to_trip").on('submit', addTrip);
+
+
+// function updateTrip(res) {
+//     $("#fortune-text").html(res);
+// }
+
+// ---------------------------------------------------------------------------- 
+// ---------------------------------------------------------------------------- 
+// ---------------------------------------------------------------------------- 
+// AJAX REQUEST TO SHOW TRIP IN SIDEBAR
+$('#map').on('click', '#add_to_trip', (evt) => {
+  evt.preventDefault();
+
+  const campsiteName = ($('#add_to_trip').val());
+  const api = "/trip_details.json?campsite=" + campsiteName
+  // console.log(api)
+
+
+  $.get(api, (res) => {
+
+    console.log(res);
+
+    for (const key in res) {
+      // console.log(key)
+      const campTitle = key;
+      console.log(campTitle)
+     
+      const campLat = res[key][0];
+      console.log(campLat)
+
+      const campLon = res[key][1];
+      console.log(campLon)
+
+      }
+
+  });
+
+});
+      // $('populate-trip-list').append("<h6>" + campTitle + "</h6>");
+// ---------------------------------------------------------------------------- 
+// ---------------------------------------------------------------------------- 
+// ---------------------------------------------------------------------------- 
+
+
+
 </script>
 
 <script src="http://code.jquery.com/jquery.js"></script>
+<!-- <script src="/static/js/ajax-requests.js"></script> -->
+
 
 </body>
 
