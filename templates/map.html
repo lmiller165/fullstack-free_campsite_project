@@ -27,11 +27,12 @@
       <aside class="col-4 h-100 overflow-y bg-white d-flex justify-content-center map-info">
         <div class="container my-4">
           <p class="lead">
+            <div class="filter-form-background">
             <!-- This is the start of my filtering form  -->
             <form id="filter-form" method="get" action="/map-filter.json">
               <!-- State text box -->
               <div class="form-group">
-                <label for="state-field"><h4>Search by state:</h4></label>
+                <label for="state-field"><h4>Narrow your search:</h4></label>
                 <input type="text"
                        class="form-control"
                        name="state"
@@ -42,66 +43,70 @@
               <!-- Amenities checklist --> 
               <div class="checkbox-all">          
                 <div class="form-group" for="amenity-field">
-                      <div>
-                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Electricity">Electricity</label>
-                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Wifi">Wifi</label>
-                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Kitchen">Kitchen</label>
-                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Restaurant">Restaurant</label>
-                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Showers">Showers</label>
-                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Toilets">Toilets</label>
-                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Big Rig Friendly">Big Rig Friendly</label>
-                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Tent Friendly">Tent Friendly</label>
-                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Pet Friendly">Pet Friendly</label>
-                    </div>
+                    <div class="row checkbox-text-amenity">
+                        <div class="col-sm-4">
+                          <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Electricity">Electricity</label><br>
+                          <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Wifi">Wifi</label><br>
+                          <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Kitchen">Kitchen</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Restaurant"> Restaurant</label>
+                            <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Showers">Showers</label>
+                            <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Toilets">Toilets</label>
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Big Rig Friendly">Rig Friendly</label>
+                          <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Tent Friendly">Tent Friendly</label>
+                          <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Pet Friendly">Pet Friendly</label>
+                        </div>
+                      </div>
+                     </div>
                   </div>
-                </div>
+     
                 <!-- Submit button -->
-                <div class="form-group">
-                  <input type="submit" class="btn-dark">
+                <div class="form-group ">
+                  <input type="submit" class="submit-map-button">
                 </div>
             </form>
+
             <!-- This is the end of my filtering form  -->
 
             <!-- Clear form button -->
-            <p class="lead">
+        
                 <form id="clear-filter" method="get" action="/map_data">
                   <div class="form-group">
-                    <input type="submit" class="link" value="Clear filters">
+                    <input type="submit" class="link" id="clear-filter-button" value="Clear filters">
                   </div>
                 </form>
-            </p>
-            <br>
-            <!-- End of clear form  -->
-<!-- ----------------------------------------------------------------------- -->
-<!-- ----------------------------------------------------------------------- -->
-<!-- ----------------------------------------------------------------------- -->
-            <!-- div for ajax call -->
-<!--             <div class="trip-details">
-              <h4>Your Trip:</h4>
-              <ul id="populate-trip-list">
-              </ul>
-            </div> -->
-<!-- ----------------------------------------------------------------------- -->
-<!-- ----------------------------------------------------------------------- -->
-<!-- ----------------------------------------------------------------------- -->
-            <!-- Show trip. This uses jinja but entire page has to reload.-->
-            <div class="lead trip-details">
-                <h5>Your adventure awaits: </h5>
-                <br>
-                <div id="campsites">
-                {% for campsite in trip %}
-                  <div>
-                      <h6>{{ campsite.name }}</h6>
-                      <p>{{ campsite.lat }} | {{ campsite.lon }}</p>
-                      <!-- I want my ajax to append here! -->
-                  </div>
-                  {% endfor %}
-              
-                  </div>
-
-                  <a href="/send_trip" class="btn btn-large btn-primary">Text me my trip</a>
-                  <a href="/clear_trip">Clear trip</a>
+      
             </div>
+            <!-- End of clear form  -->
+
+<!-- ----------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------- -->
+            <div class="show-trip-full-div">
+            <!-- Show trip. This uses jinja but entire page has to reload.-->
+              <div class="lead trip-details">
+                  <div>
+                    <div>
+                      <h5>Your trip: </h5>
+                        <div id="campsites">
+                        {% for campsite in trip %}
+                          <div class="single-site hid-box">
+                              <a href="/campsite-details?campsite={{ campsite.name }}"><h6>{{ campsite.name }}</h6></a>
+                              <p>{{ campsite.lat }} | {{ campsite.lon }}</p>
+                              <!-- I want my ajax to append here! -->
+                          </div>
+                          {% endfor %}
+                          </div>
+                    </div>
+                    <div class="button-holder">
+                      <a href="/send_trip" class="btn btn-large btn-primary">Text me my trip</a>
+                      <a href="/clear_trip" id="clear-filter-button">Clear trip</a>
+                  </div>
+              </div>
+           </div>
           </p>
         </div>
       </aside>
@@ -226,11 +231,7 @@ var map = new mapboxgl.Map({
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <div class="pop-text"><p">${marker.properties.description}<p></div>
-
-                
-
                     <div class="button_cont" align="center"><button type="button" class="example_f" id="add_to_trip" target="_blank" value="${marker.properties.title}"><span>ADD TO TRIP</button></div>
-
                     <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a><span><sp>|<sp></span>
                     <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>`))
         .addTo(map);
@@ -299,7 +300,7 @@ var map = new mapboxgl.Map({
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <p>${marker.properties.description}<p>
-                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button><br>
+                     <div class="button_cont" align="center"><button type="button" class="example_f" id="add_to_trip" target="_blank" value="${marker.properties.title}"><span>ADD TO TRIP</button></div>
                     <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
                     <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>`))
         .addTo(map);
@@ -334,7 +335,7 @@ var map = new mapboxgl.Map({
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <p>${marker.properties.description}<p>
-                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button><br>
+                     <div class="button_cont" align="center"><button type="button" class="example_f" id="add_to_trip" target="_blank" value="${marker.properties.title}"><span>ADD TO TRIP</button></div>
                     <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
                     <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>`))
         .addTo(map);
@@ -368,8 +369,8 @@ $('#map').on('click', '#add_to_trip', (evt) => {
     //   console.log(campLon)
 
  
-    $('#campsites').append(`<div>
-                      <h6>${res.name}</h6>
+    $('#campsites').append(`<div class="single-site">
+                          <a href="/campsite-details?campsite=${res.name}"><h6>${res.name}</h6></a>
                       <p>${res.lat} | ${res.lon}</p>
                       </div>`);
     console.log(res.name);

@@ -246,10 +246,12 @@ def add_review_process():
 
     db.session.commit()
 
+    reviews = campsite.reviews
 
     return render_template("campsite-details.html", campsite=campsite,
                                                     amenities=amenities,
                                                     ratings=ratings,
+                                                    reviews=reviews,
                                                     user=user)
 
 ################################ ADD CAMPSITES #################################
@@ -573,7 +575,7 @@ def clear_trip():
     del session["trip"]
     flash("Trip Deleted.")
 
-    return redirect("/trip")
+    return redirect("/map")
 
 
 @app.route('/trip_details.json', methods=['GET'])

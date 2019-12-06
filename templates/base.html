@@ -38,9 +38,9 @@
       </ul> -->
 
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
+<!--         <li class="nav-item">
           <a class="nav-link" href="/view-campsites">View Campsites</a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="nav-link" href="/map">Map</a>
         </li>
@@ -62,15 +62,20 @@
 
   </nav>
 
+  <!-- Show flashed messages -->
+  {% with messages = get_flashed_messages() %}
+      {% for message in messages %}
+          <div class="alert alert-warning sticky-top alert alert-dismissible">{{ message }}</div>
+      {% endfor %}
+  {% endwith %}
 
-{% for flash in get_flashed_messages() %}
-  {{ flash }}
-{% endfor %}
 
   <!-- This is where the main content goes. -->
   {% block body %}
       BODY OF PAGE GOES HERE VIA INHERITANCE
   {% endblock %}
+
+
 
 
 </body>

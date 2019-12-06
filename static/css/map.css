@@ -66,7 +66,7 @@ body {
 
 .example_f {
    border-radius: 4px;
-   background: linear-gradient(to right, #2e0176, #630b49) !important;
+   background: linear-gradient(to right, #4e62f8, #4e62f8) !important;
    border: none;
    color: #FFFFFF;
    text-align: center;
@@ -100,4 +100,99 @@ body {
    right: 0;
  }
 
+.submit-map-button{
+   border-radius: 4px;
+   background: linear-gradient(to right, #4e62f8, #4e62f8) !important;
+   border: none;
+   color: #FFFFFF;
+   text-align: center;
+   text-transform: uppercase;
+   font-size: 13px;
+   padding: 10px;
+   width: 180px;
+   transition: all 0.4s;
+   cursor: pointer;
+   margin: 5px;
+}
 
+
+
+.checkbox-text-amenity{
+  font-size: 13px;
+}
+
+#clear-filter-button{
+  background: transparent;
+  border: transparent;
+  color: #4e62f8;
+  text-decoration: underline;
+  padding-left: 5px;
+  padding-top: 0;
+}
+
+.form-group{
+  margin-bottom: 0;
+}
+
+.single-site{
+/*  border-left: solid 70px transparent; */
+/*  border-right: solid 70px transparent; */
+/*  border-bottom: solid 70px #fff;*/
+  box-shadow: 3px 3px 10px #ECECEC;
+  border-radius: 6px;
+  width: 380px; 
+  padding: 15px;
+  margin-bottom: 10px;
+
+  -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+   -moz-animation: fadein 2s; /* Firefox < 16 */
+    -ms-animation: fadein 2s; /* Internet Explorer */
+     -o-animation: fadein 2s; /* Opera < 12.1 */
+        animation: fadein 2s;
+}
+
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+
+
+
+.filter-form-background{
+  box-shadow: 3px 3px 10px #ECECEC;
+  border-radius: 6px;
+  width: 380px; 
+  padding: 15px;
+  margin-bottom: 40px;
+}
+
+
+/*.show-trip-full-div{
+  background-color: gray;
+}*/

@@ -1,21 +1,30 @@
 {% extends 'base.html' %}
 
 {% block body %}
+<head>
 
-<div class="container">
-    <form action="/add-review" method="POST" class="container">
-        <h2>Add review for: {{ campsite.name }}</h2>
+  <link rel="stylesheet" href="/static/css/campsite_detail.css">
+</head>
+
+     <header class="py-5 bg-image-full" style="background-image: url('static/images/robson-hatsukami-morgan-BWnHYb6kZAA-unsplash.jpg');">
+<!--     <img class="img-fluid d-block mx-auto" src="static/images/toa-heftiba-x9I-6yoXrXE-unsplash.jpg" alt=""> -->
+  </header>
+
+<div class="register-background">
+<div class="container register-form overlayText">
+    <form action="/add-review" method="POST" class="container range-field my-4 w-100">
+        <h5>Add review for:</h5> 
+        <h2>{{ campsite.name }}</h2>
         <br>
-        <h4>Review:</h4>
-
         <div class="form-group">
-            <textarea class="form-control" name="review" rows="5" id="description"></textarea>
+            <textarea class="form-control" name="review" rows="5" id="description" placeholder="What did you think about this campsite?"></textarea>
         </div>
         <br>
         <h4>Ratings:</h4>
 
         <div>
           <h5>Noise level</h5>
+        
             <div class="radio inline">
               <label><input type="radio" name="noiselevel" value="1">1</label>
               <label><input type="radio" name="noiselevel" value="2">2</label>
@@ -66,10 +75,14 @@
 
     <br>
     <div class="form-group">
-      <input type="submit" value="Add Review" class="btn-dark">
+      <input type="submit" value="Add Review" class="submit-map-button">
     </div>
 
     </form>
 </div>
+</div>
+
+
+     
 
 {% endblock %}

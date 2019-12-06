@@ -1,22 +1,22 @@
 /*Sitewide  */
 
 .line{
-    
+
 }
 
 .navbar {
     /*background:linear-gradient(to right,rgba(33, 0, 133, 0.0),rgba(255, 0, 232, 0.0));*/
-    background-color: #E0FFFB;
+    background-color: #FCFCFC;
     color: black;
     border-radius: 0px;
 }
 
 #ubermelon-logo, #ubermelon-logo:hover, .navbar-dark .navbar-brand {
-    color: black;
+    color: #333333;
 }
 
 .navbar-nav>li>a, .navbar-dark .navbar-nav .nav-link {
-    color: black;
+    color: #4e62f8;
 }
 
 /*ul.nav a:hover { color: #BEFFEF !important; }*/
@@ -282,6 +282,11 @@ h4{
     font-size: 18px;
 }
 
+h6{
+  color: #4e62f8 !important;
+  text-decoration: underline !important;
+}
+
 p {
     font-family: 'Varela Round', sans-serif;
     font-size: 15px;
@@ -291,6 +296,82 @@ p {
   padding: 5px;
 }
 
+.col-sm-4{
+    padding-right: 0px;
+}
+
+.btn:focus,.btn:active {
+   outline: none !important;
+   box-shadow: none;
+}
+
+.btn-large{
+   border-radius: 4px;
+   background: linear-gradient(to right, #4e62f8, #4e62f8) !important;
+   border: none;
+   color: #FFFFFF;
+   text-align: center;
+   text-transform: uppercase;
+   font-size: 13px;
+   padding: 10px;
+   width: 180px;
+   transition: all 0.4s;
+   cursor: pointer;
+   margin: 5px;
+}
 
 
+.register-form{
+  /*box-shadow: 3px 3px 20px #A7A7A7;*/
+  background-blend-mode: multiply;
+  background: white;
+  border-radius: 6px;
+  width: 600px; 
+  padding: 30px;
+  margin-bottom: 80px;
+}
 
+.register-background{
+    background: #F5F5F5;
+    padding: 80px;
+    height: 100%;
+}
+
+.overlayText {
+  position:absolute;
+  top:40%;
+  left:27%;
+  z-index:1;
+}
+
+#description.form-control{
+  width: 100% !important;
+}
+
+
+.alert-warning{
+    background-color: #4e62f8;
+    font-family: 'Varela Round', sans-serif;
+    font-size: 15px;
+    color: white;
+    padding: 10px
+    margin: 0;
+}
+
+
+.hid-box {
+  top: 100%;
+  position: relative;
+  transition: all .3s ease-out;
+  height: 100%;
+}
+
+.button-holder{
+    margin-top: 20px;
+    margin-bottom: 50px;
+/*    position: fixed;
+    width: 420px;
+    bottom: 0px;
+    background-color: #4e62f8;*/
+
+}

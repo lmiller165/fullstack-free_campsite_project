@@ -130,6 +130,38 @@ a:hover {
 .login-form-1 .login-button.clicked.error {
   color: #e74c3c;
 }
+
+
+/*new style form 2*/
+.login-form-2 .form-control {
+  border: 0;
+  box-shadow: 0 0 0;
+  border-radius: 0;
+  background: white !important;
+  color: #555555;
+  padding: 7px 0;
+  font-weight: bold;
+  height:auto;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*=== 6. Form Invalid ===*/
 label.form-invalid {
   position: absolute;
@@ -300,6 +332,8 @@ label:hover:before {
   width: 400px;
 }
 
-
-
+#description.form-control{
+  width: 550px !important;
+  padding: 0 !important;
+}
 
