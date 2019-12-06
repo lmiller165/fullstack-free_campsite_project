@@ -2,34 +2,63 @@
 
 {% block body %}
 
-<div class="container"
+<head>
+  <!-- sitewide css -->
+  <link rel="stylesheet" href="/static/css/campsite_detail.css">
+</head>
 
-    <h6>CAMPSITE DETAILS:</h6>
-    <h3>{{ campsite.name }}</h3>
-    <h5>{{ campsite.lat }} | {{ campsite.lon }}</h5>
-    <br>
-    <h4>Description:</h4>
-    <p>{{ campsite.description }}</p>
-    <br>
-    <h4>Amenities:</h4>
-        {% for amenity in amenities %}
-            <p>{{ amenity.name }}</p>
-        {% endfor %}
-    <br>
-    <h4>Ratings:</h4>
-        {% for rating in ratings %}
-            <p>Noise level: {{ rating.noise_level }}</p>
-            <p>Privacy level: {{ rating.privacy_level }}</p>
-            <p>Risk level: {{ rating.risk_level }}</p>
-        {% endfor %}
-    <br class="line">
-    <h4>Reviews:</h4>
-        {% for review in reviews %}
-            <h5>{{ review.user.fname}} {{ review.user.lname }} says:</h5>
-            <p>{{ review.review_description }}</p>
-        {% endfor %}
+<body>
 
-</div>
+
+  <!-- Header - set the background image for the header in the line below -->
+  <header class="py-5 bg-image-full" style="background-image: url('static/images/robson-hatsukami-morgan-BWnHYb6kZAA-unsplash.jpg');">
+<!--     <img class="img-fluid d-block mx-auto" src="static/images/toa-heftiba-x9I-6yoXrXE-unsplash.jpg" alt=""> -->
+  </header>
+
+
+  <!-- Content section -->
+  <div class="container">
+      <section class="py-5" id="campsite-description">
+        <div class="container">
+          <h1>{{ campsite.name }}</h1>
+          <p class="lead">{{ campsite.lat }} | {{ campsite.lon }}</p>
+          <p><strong>Description:</strong><br>{{ campsite.description }}</p>
+          <br>
+          <div class="line"></div>
+          <p class="lead">Amenities:</p>
+            {% for amenity in amenities %}
+                <p>{{ amenity.name }}</p>
+            {% endfor %}
+          <br>
+          <button><a href="/add-review?campsite={{ campsite.name }}">Add Review</a></button><span> </span>
+          <button><a href="/add_to_trip_cart/{{ campsite.name }}">Add to Trip</a></button>
+          <br>
+          <p class="lead">Ratings:</p>
+            {% for rating in ratings %}
+                <p>Noise level: {{ rating.noise_level }}</p>
+                <p>Privacy level: {{ rating.privacy_level }}</p>
+                <p>Risk level: {{ rating.risk_level }}</p>
+            {% endfor %}
+          <br class="line">
+          <p class="lead">Reviews:</p>
+            {% for review in reviews %}
+                <h5>{{ review.user.fname}} {{ review.user.lname }} says:</h5>
+                <p>{{ review.review_description }}</p>
+            {% endfor %}
+        </div>
+      </section>
+    </div>
+
+
+
+
+  <!-- Bootstrap core JavaScript -->
+
+
+</body>
+
+</html>
+
 
 
 

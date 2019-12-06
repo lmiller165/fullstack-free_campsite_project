@@ -19,6 +19,7 @@
   <!-- Load my stylesheet -->
   <link rel="stylesheet" href="/static/css/style.css">
 
+
 </head>
 <body>
 
@@ -26,7 +27,7 @@
   <!-- Static navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark">
 
-    <a id="ubermelon-logo" class="navbar-brand" href="/">Free to roam</a>
+    <a id="ubermelon-logo" class="navbar-brand" href="/">Roam For Free</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -44,10 +45,10 @@
           <a class="nav-link" href="/map">Map</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/add-campsite">Add Campsite</a>
+          <a class="nav-link" href="/trip">My Trip</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/trip">My Trip</a>
+          <a class="nav-link" href="/add-campsite">Add Campsite</a>
         </li>
         {% if "user_id" in session %}
         <li class="nav-item">
@@ -70,6 +71,7 @@
   {% block body %}
       BODY OF PAGE GOES HERE VIA INHERITANCE
   {% endblock %}
+
 
 </body>
 </html>

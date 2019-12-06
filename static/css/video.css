@@ -69,7 +69,7 @@
   left:0;
   bottom:0;
   z-index:1;
-  background:linear-gradient(to right,rgba(65, 0, 255, 0.4),rgba(255, 0, 232, 0.3));
+  background:linear-gradient(to right,rgba(65, 0, 255, 0.5),rgba(255, 0, 232, 0.3));
 }
 
 /*#home-top-video {
@@ -85,7 +85,7 @@
 #home-text {
   position: absolute;
   left: 20%;
-  top: 20%;
+  top: 5%;
   bottom: 20%;
   width: 400px;
 /*  -webkit-transform: translate(-50%, -50%);

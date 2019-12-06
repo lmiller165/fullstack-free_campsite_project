@@ -17,12 +17,14 @@
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />  
   <!-- mapbox css -->
   <link rel="stylesheet" href="/static/css/map.css">
+  <!-- sitewide css -->
+  <link rel="stylesheet" href="/static/css/style.css">
 </head>
 
 <body>
   <section class="h-100 mx-2 full-columns container-fluid">
     <div class="row h-100">
-      <aside class="col-4 h-100 overflow-y bg-light d-flex justify-content-center map-info">
+      <aside class="col-4 h-100 overflow-y bg-white d-flex justify-content-center map-info">
         <div class="container my-4">
           <p class="lead">
             <!-- This is the start of my filtering form  -->
@@ -36,18 +38,21 @@
                        id="state-field"
                        placeholder="{{ state }}">
               </div>
-              <!-- Amenities checklist -->
-              <div class="form-group" for="amenity-field">
-                    <div>
-                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Electricity">Electricity</label>
-                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Wifi">Wifi</label>
-                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Kitchen">Kitchen</label>
-                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Restaurant">Restaurant</label>
-                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Showers">Showers</label>
-                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Toilets">Toilets</label>
-                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Big Rig Friendly">Big Rig Friendly</label>
-                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Tent Friendly">Tent Friendly</label>
-                    <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Pet Friendly">Pet Friendly</label>
+
+              <!-- Amenities checklist --> 
+              <div class="checkbox-all">          
+                <div class="form-group" for="amenity-field">
+                      <div>
+                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Electricity">Electricity</label>
+                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Wifi">Wifi</label>
+                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Kitchen">Kitchen</label>
+                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Restaurant">Restaurant</label>
+                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Showers">Showers</label>
+                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Toilets">Toilets</label>
+                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Big Rig Friendly">Big Rig Friendly</label>
+                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Tent Friendly">Tent Friendly</label>
+                      <label for="amenity-field"><input type="checkbox" name="amenity" id="amenity-field" value="Pet Friendly">Pet Friendly</label>
+                    </div>
                   </div>
                 </div>
                 <!-- Submit button -->
@@ -83,6 +88,7 @@
             <div class="lead trip-details">
                 <h5>Your adventure awaits: </h5>
                 <br>
+                <div id="campsites">
                 {% for campsite in trip %}
                   <div>
                       <h6>{{ campsite.name }}</h6>
@@ -90,7 +96,7 @@
                       <!-- I want my ajax to append here! -->
                   </div>
                   {% endfor %}
-                  <div id="populate-trip-list">
+              
                   </div>
 
                   <a href="/send_trip" class="btn btn-large btn-primary">Text me my trip</a>
@@ -219,10 +225,14 @@ var map = new mapboxgl.Map({
         .setLngLat(marker.geometry.coordinates)
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
           .setHTML(`<h3>${marker.properties.title}</h3>
-                    <p>${marker.properties.description}<p>
-                    <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
-                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>
-                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button>`))
+                    <div class="pop-text"><p">${marker.properties.description}<p></div>
+
+                
+
+                    <div class="button_cont" align="center"><button type="button" class="example_f" id="add_to_trip" target="_blank" value="${marker.properties.title}"><span>ADD TO TRIP</button></div>
+
+                    <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a><span><sp>|<sp></span>
+                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>`))
         .addTo(map);
 
     });
@@ -289,9 +299,9 @@ var map = new mapboxgl.Map({
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <p>${marker.properties.description}<p>
+                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button><br>
                     <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
-                    <a href="/add-review?campsite=${marker.properties.title}"">Add Review</a>
-                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button>`))
+                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>`))
         .addTo(map);
       });
     });
@@ -324,48 +334,14 @@ var map = new mapboxgl.Map({
         .setPopup(new mapboxgl.Popup({ offset: 25 }) // adding popups
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <p>${marker.properties.description}<p>
+                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button><br>
                     <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
-                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>
-                    <button type="button" id="add_to_trip" value="${marker.properties.title}">Add</button>`))
+                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>`))
         .addTo(map);
     });
   });
 });
 
-//----------------------------------------------------------------------------//
-// AJAX REQUEST TO SHOW TRIP IN SIDEBAR
-
-// use this function to update your html div
-// function updateTrip(results) {
-
-//     console.log(results)
-//     $('trip-details').html("<p>" + results.campsite_name + "</p>");
-// }
-
-
-// function addTrip(evt) {
-//     evt.preventDefault();
-
-//     let formInputs = {
-//         "campsite_name": ${marker.properties.title}
-//     };
-
-//     console.log("addTrip formInputs:")
-//     console.log(formInputs)
-
-//     $.post("/trip_details.json", formInputs, updateTrip);
-// }
-
-// //actual request using the add trip:
-// $("#add_to_trip").on('submit', addTrip);
-
-
-// function updateTrip(res) {
-//     $("#fortune-text").html(res);
-// }
-
-// ---------------------------------------------------------------------------- 
-// ---------------------------------------------------------------------------- 
 // ---------------------------------------------------------------------------- 
 // AJAX REQUEST TO SHOW TRIP IN SIDEBAR
 $('#map').on('click', '#add_to_trip', (evt) => {
@@ -380,18 +356,25 @@ $('#map').on('click', '#add_to_trip', (evt) => {
 
     console.log(res);
 
-    for (const key in res) {
-      // console.log(key)
-      const campTitle = key;
-      console.log(campTitle)
+    // for (const key in res) {
+    //   // console.log(key)
+    //   const campTitle = key;
+    //   console.log(campTitle)
      
-      const campLat = res[key][0];
-      console.log(campLat)
+    //   const campLat = res[key][0];
+    //   console.log(campLat)
 
-      const campLon = res[key][1];
-      console.log(campLon)
+    //   const campLon = res[key][1];
+    //   console.log(campLon)
 
-      }
+ 
+    $('#campsites').append(`<div>
+                      <h6>${res.name}</h6>
+                      <p>${res.lat} | ${res.lon}</p>
+                      </div>`);
+    console.log(res.name);
+
+      // }
 
   });
 

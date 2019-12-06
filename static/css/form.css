@@ -1,4 +1,15 @@
-    /*------------------------------------------------------------------
+/*Some form styling for me*/
+
+
+
+
+
+
+
+
+
+
+/*------------------------------------------------------------------
 [Master Stylesheet]
 
 Project     : Aether
@@ -27,16 +38,16 @@ body {
 }
 /*=== 2. Anchor Link ===*/
 a {
-  color: #aaaaaa;
+  color: #F6F6FF;
   transition: all ease-in-out 200ms;
 }
 a:hover {
-  color: #333333;
+  color: #BEFFEF;
   text-decoration: none;
 }
 /*=== 3. Text Outside the Box ===*/
 .etc-login-form {
-  color: #919191;
+  color: #ffffff;
   padding: 10px 20px;
 }
 .etc-login-form p {
@@ -55,7 +66,7 @@ a:hover {
   border: 0;
   box-shadow: 0 0 0;
   border-radius: 0;
-  background: transparent;
+  background: white !important;
   color: #555555;
   padding: 7px 0;
   font-weight: bold;
@@ -288,3 +299,7 @@ label:hover:before {
   font-weight: bold;
   width: 400px;
 }
+
+
+
+

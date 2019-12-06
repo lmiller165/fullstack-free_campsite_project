@@ -596,30 +596,33 @@ def get_trip_details():
         trip = session['trip'] = {}
 
     trip[campsite_name] = [description, [lat, lon]]
+    # session.commit()
+    # # Show user success message on next page load
+    # flash("YAAAY")
+    session.modified = True
 
-    # Show user success message on next page load
-    flash("Campsite successfully added to trip.")
 
+    # campsites = {}
 
-    campsites = {}
+    # trip = session.get("trip", {})
 
-    trip = session.get("trip", {})
-
-    for campsite in trip.items():
-        campsite_name = campsite[0]
-        campsite_location = campsite[1][1]
-        campsites[campsite_name] = campsite_location
+    # for campsite in trip.items():
+    #     campsite_name = campsite[0]
+    #     campsite_location = campsite[1][1]
+    #     campsites[campsite_name] = campsite_location
 
 
     # print("\n\n\n")
     # print(campsite)
     print("\n\n\n")
-    print(campsites)
+    # print(campsites)
     print("\n\n\n")
 
 
 
-    return jsonify(campsites)
+    return jsonify({'name': campsite.name,
+                    'lat': lat,
+                    'lon': lon})
 
     
 
