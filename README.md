@@ -1,6 +1,6 @@
 # Roam for Free
 
-![](images/header-image.jpg)
+![](readme-img/homescreen.png)
 
 ## Overview
 **Description**  
