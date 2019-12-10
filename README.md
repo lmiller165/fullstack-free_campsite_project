@@ -1,9 +1,21 @@
 # Roam for Free
+Roam for Free (previously named "Free Camping Project") is a full-stack web application that allows users to add points to a map where they have previously stayed overnight for free. 
 
 ![](readme-img/homescreen.png)
 
 ## Overview
-**Description**  
-Roam for Free (previously named "Free Camping Project") is a full-stack web application that allows users to add points to a map where they have previously stayed overnight for free. Anyone is able to view the uploaded campsites and use them to build an off-the-grid trip of their own. After someone has stayed at any given campsite they will also be able to add reviews and ratings for each spot. 
+**The Map**  
+* Shows campsites that have been added to the database.
+* Levrages mapbox javascrip methods to build informational pop-ups for each site.
+* Allow user to add a location to their trip. 
+
+**Users can:** 
+* Sign in/sign out/sign up (create an account)
+* Add a new location with latitude, longitute, campsite title, and description. 
+* See all campsites uploaded by other users.
+* Add reviews and risk ratings to each campsite. 
+* Send yourself a list of locations from your trip. 
+* Click on icons to view campsite information and navigate to detail pages.
+* View campsite detail pages. 
 
 
