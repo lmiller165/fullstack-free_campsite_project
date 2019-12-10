@@ -19,11 +19,11 @@ Roam for Free (previously named "Free Camping Project") is a full-stack web appl
 * View campsite detail pages. 
 
 ## Technologies and stack
-**Backend:** 
+**Backend:**  
 Python, Flask, Flask-SQLAlchemy, ParseLib, Jinja2
 
-**Frontend:** 
+**Frontend:**   
 JavaScript, jQuery, AJAX, Jinja, jQuery,HTML5, CSS3, Twitter Bootstrap (html/css/js framework), RWD (responsive web design).
 
-**APIs:** 
+**APIs:**   
 Mapbox, Twilio
