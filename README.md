@@ -44,4 +44,6 @@ Mapbox, Twilio
  Use the added information 
  
 
-![](readme-img/home-min.gif)
+![](readme-img/init-search-min.gif)
+![](readme-img/filter-min.gif)
+
