@@ -38,6 +38,7 @@ Mapbox, Twilio
  Mapbox javascript methods to initialize a visual map for each campsite. 
  Query database to construct geojson master file which is supplied to my javascript function to populate the map.
  Used mapbox javascrip methods to contruct pop-ups for each campsite that allows users to view information, navigate to detail page and add campsite to trip.
+![](readme-img/popup2-min.gif)
  
 **Filtering campsites**  
  Used Mapbox API endpoints to gather additional information for each campsite with reverse geolocation. 
