@@ -27,3 +27,22 @@ JavaScript, jQuery, AJAX, Jinja, jQuery,HTML5, CSS3, Twitter Bootstrap (html/css
 
 **APIs:**   
 Mapbox, Twilio
+
+## Features
+**Campsite Storage**  
+ Get latitude and longitude from user's browser using HTML5 geolocation.
+ Store location data in a database with associated tables for users, campsites, reviews, ratings and amenities.
+ Flask app routes AJAX requests to the database and Flask session. 
+ 
+**Map**  
+ Mapbox javascript methods to initialize a visual map for each campsite. 
+ Query database to construct geojson master file which is supplied to my javascript function to populate the map.
+ Used mapbox javascrip methods to contruct pop-ups for each campsite that allows users to view information, navigate to detail page and add campsite to trip.
+ 
+**Filtering campsites**  
+ Used Mapbox API endpoints to gather additional information for each campsite with reverse geolocation. 
+ Use the added information 
+ 
+ 
+
+
