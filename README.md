@@ -48,3 +48,4 @@ Mapbox, Twilio
 ![](readme-img/init-search-min.gif)
 ![](readme-img/filter-min.gif)
 
+#More Features Coming Soon 
