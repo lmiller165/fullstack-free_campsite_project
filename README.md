@@ -1,5 +1,5 @@
 # Roam for Free
-Roam for Free (previously named "Free Camping Project") is a full-stack web application that allows users to add points to a map where they have previously stayed overnight for free. 
+Roam for Free is a full-stack web application that acts as a database for travelers. It allows users to add locations where they have previously stayed overnight for free. Other users can view, rate, and review the various locations. You can also build a trip using all the locations and text yourself a list of coordinates to go to. 
 
 ![](readme-img/homescreen.png)
 
