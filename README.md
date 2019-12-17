@@ -44,8 +44,10 @@ Mapbox, Twilio
  Used Mapbox API endpoints to gather additional information for each campsite with reverse geolocation. 
  Use the added information 
  
-
+Search campsites by state:
 ![](readme-img/init-search-min.gif)
+
+Search campsites by filters:
 ![](readme-img/filter-min.gif)
 
 #More Features Coming Soon 
