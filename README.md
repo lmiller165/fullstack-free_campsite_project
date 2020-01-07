@@ -50,4 +50,3 @@ Search campsites by state:
 Search campsites by filters:
 ![](readme-img/filter-min.gif)
 
-#More Features Coming Soon 
