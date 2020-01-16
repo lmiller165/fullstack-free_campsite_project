@@ -1,6 +1,9 @@
 # Roam for Free
 Roam for Free is a full-stack web application that acts as a database for travelers. It allows users to add locations where they have previously stayed overnight for free. Other users can view, rate, and review the various locations. You can also build a trip using all the locations and text yourself a list of coordinates to go to. 
 
+To watch a screen cast of the application go to:
+https://vimeo.com/382302181
+
 ![](readme-img/homescreen.png)
 
 ## Overview
