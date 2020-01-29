@@ -8,7 +8,7 @@
 </head>
 
 <body>
-
+<div class="camp-body">
 
   <!-- Header - set the background image for the header in the line below -->
   <header class="py-5 bg-image-full" style="background-image: url('static/images/robson-hatsukami-morgan-BWnHYb6kZAA-unsplash.jpg');">
@@ -17,44 +17,75 @@
 
 
   <!-- Content section -->
-  <div class="container">
-      <section class="py-5" id="campsite-description">
-        <div class="container">
-          <h1>{{ campsite.name }}</h1>
-          <p class="lead">{{ campsite.lat }} | {{ campsite.lon }}</p>
-          <p><strong>Description:</strong><br>{{ campsite.description }}</p>
-          <br>
-          <div class="line"></div>
-          <p class="lead">Amenities:</p>
-            {% for amenity in amenities %}
-                <p>{{ amenity.name }}</p>
-            {% endfor %}
-          <br>
-          <button><a href="/add-review?campsite={{ campsite.name }}">Add Review</a></button><span> </span>
-          <button><a href="/add_to_trip_cart/{{ campsite.name }}">Add to Trip</a></button>
-          <br>
-          <p class="lead">Ratings:</p>
-            {% for rating in ratings %}
-                <p>Noise level: {{ rating.noise_level }}</p>
-                <p>Privacy level: {{ rating.privacy_level }}</p>
-                <p>Risk level: {{ rating.risk_level }}</p>
-            {% endfor %}
-          <br class="line">
-          <p class="lead">Reviews:</p>
-            {% for review in reviews %}
-                
-                <p>{{ review.review_description }}</p>
-            {% endfor %}
-        </div>
-      </section>
+<div class="camp-background">
+  <div class="container camp-detail overlayTextCamp ">
+    <div>
+        <section>
+            <h1>{{ campsite.name }}</h1>
+            <p class="lead">{{ campsite.lat }} | {{ campsite.lon }}</p>
+            <p><strong>Description:</strong><br>{{ campsite.description }}</p>
+            <br>
+            <p class="lead">Amenities:</p>
+              {% for amenity in amenities %}
+                  <p>{{ amenity.name }}</p>
+              {% endfor %}
+            <br>
+            <div class="button_cont" align="left"><a href="/add_to_trip_cart/{{ campsite.name }}"><button type="button" class="example_f" id="add_to_trip" target="_blank" value="{{ campsite.name }}"><span>ADD TO TRIP</span></button></a>
+            <a href="/add-review?campsite={{ campsite.name }}" id="clear-filter-button">Add Review</a>
+            </div>
+        
+        </section>
+      </div>
     </div>
+
+
+
+    <div class="review-formatting">
+      <p class="lead">Reviews:</p>
+        {% for rating in ratings %}
+          <div class="review-padding">
+            <small class="review-stamp">August 31th, 2019 by Aaron:</small>
+            <p>Free camping, no permit needed. Roughly 10 sites spaced apart nicely with two in a cul de sac that could accommodate at total of 5-8 rigs. Two very clean vault toilets are centrally located. Also be sure to follow the posted signs regarding having a fires in a metal container. The area is patrolled regularly by CA Park Rangers, who are cool but heavily armed. Don't mess with them. Since the area is so quiet, you might hear traffic driving pass on S22.</p>
+            <p>Noise level: 1.2 | Privacy level: 8.9 | Risk level: 3.2</p>
+         </div>
+ <!--                <p>Noise level: {{ rating.noise_level }} | Privacy level: {{ rating.privacy_level }} | Risk level: {{ rating.risk_level }}</p> -->
+          <div class="review-padding">
+          <small class="review-stamp">April 28th, 2019 by Victor:</small>
+          <p>Free camping, no permit needed. Roughly 10 sites spaced apart nicely with two in a cul de sac that could accommodate at total of 5-8 rigs. Two very clean vault toilets are centrally located. Also be sure to follow the posted signs regarding having a fires in a metal container. The area is patrolled regularly by CA Park Rangers, who are cool but heavily armed. Don't mess with them. Since the area is so quiet, you might hear traffic driving pass on S22.</p>
+          <p>Noise level: 1.2 | Privacy level: 8.9 | Risk level: 3.2</p>
+          </div>
+
+          <div class="review-padding">
+          <small class="review-stamp">March 11th, 2019 by Kate:</small>
+          <p>Nice well spaced out campsites in sandy hills with lots of wild flowers at the moment. Good 2wd access.</p>
+          <p>Noise level: 1.2 | Privacy level: 8.9 | Risk level: 3.2</p>
+          </div>
+
+          <div class="review-padding">
+          <small class="review-stamp">March 5th, 2019 by Marshall:</small>
+          <p>As stated by other visitors, great place with vault toilet. FREE. I did pass the entrance eastbound and had to loo back to road and campsite sign post.</p>
+          <p>Noise level: 1.2 | Privacy level: 8.9 | Risk level: 3.2</p>
+          </div>
+
+          <div class="review-padding">
+          <small class="review-stamp">April 28th, 2019 by Leslie:</small>
+          <p>Just as described. FYI- coordinates seem to be for an actual campsite rather than the entrance. You may drive by it but you’ll realize it right away</p>
+          <p>Noise level: 1.2 | Privacy level: 8.9 | Risk level: 3.2</p>
+          </div>
+        {% endfor %}
+<!--             {% for review in reviews %}
+                <p></p>
+                <p>{{ review.review_description }}</p>
+            {% endfor %} -->
+      </div>
+
 
 
 
 
   <!-- Bootstrap core JavaScript -->
 
-
+</div>
 </body>
 
 </html>

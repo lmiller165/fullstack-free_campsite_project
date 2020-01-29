@@ -113,7 +113,7 @@ def signup_process():
     db.session.add(new_user)
     db.session.commit()
 
-    flash(f"User {email} added.")
+    # flash(f"User {email} added.")
     return redirect("/")
 
 ############################### VIEW CAMPSITES #################################
@@ -174,9 +174,8 @@ def show_campsite_details():
 
     #Campsite details
     campsite_name = request.args.get('campsite')
+
     campsite = Campsite.query.filter_by(name=campsite_name).first()
-    print("\n\n\n\n")
-    print(campsite)
     amenities = campsite.amenities
     ratings = campsite.ratings
     reviews = campsite.reviews
@@ -192,6 +191,7 @@ def show_campsite_details():
                                                     ratings=ratings,
                                                     user=user,
                                                     reviews=reviews)
+                                                    
 
 ################################# REVIEW PAGE ##################################
 
@@ -265,7 +265,7 @@ def add_campsite_form():
 
     #Checking for user_id
     if not user_id:
-        flash(f"You must be logged in to add a campsite")
+        # flash(f"You must be logged in to add a campsite")
         raise Exception("No user logged in.")
 
         return redirect("/")
@@ -474,9 +474,6 @@ def add_to_trip(campsite_name):
     #Campsite details
     #query to get campsite information
     #use it to build proper session dictionary
-    # print("\n\n\n")
-    # print(campsite_name)
-    # print("\n\n\n")
     campsite = Campsite.query.filter_by(name=campsite_name).first()
     lat = campsite.lat
     lon = campsite.lon
@@ -534,12 +531,13 @@ def add_to_trip_cart(campsite_name):
         trip = session['trip'] = {}
 
     trip[campsite_name] = [description, [lat, lon]]
+    session.modified = True
 
     # Show user success message on next page load
-    flash("Campsite successfully added to trip.")
+    # flash("Campsite successfully added to trip.")
 
     # Redirect to trip page
-    return redirect("/trip")
+    return redirect("/map")
 
 
 
@@ -561,7 +559,7 @@ def send_trip():
 
     flash("Your trip has been sent to you")
 
-    return redirect("/trip")
+    return redirect("/map")
 
 
 @app.route('/clear_trip', methods=['GET'])

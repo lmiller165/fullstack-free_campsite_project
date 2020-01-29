@@ -65,9 +65,16 @@
   <!-- Show flashed messages -->
   {% with messages = get_flashed_messages() %}
       {% for message in messages %}
-          <div class="alert alert-warning sticky-top alert alert-dismissible">{{ message }}</div>
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <strong>Success!</strong> Your trip has been sent to you. 
+          </div>
+<!--           <div class="alert alert-warning sticky-top alert alert-dismissible">{{ message }}</div> -->
       {% endfor %}
   {% endwith %}
+
 
 
   <!-- This is where the main content goes. -->

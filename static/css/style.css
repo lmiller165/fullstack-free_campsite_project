@@ -321,6 +321,41 @@ p {
 }
 
 
+/*form*/
+.camp-detail{
+  /*box-shadow: 3px 3px 20px #A7A7A7;*/
+  background-blend-mode: multiply;
+  background: white !important;
+  border-radius: 6px;
+  width: 800px; 
+/*  height: 800px;*/
+  padding-right: 60px;
+  padding-left: 60px;
+  padding-top: 60px;
+  padding-bottom:60px;
+  margin-bottom: 80px;
+}
+
+.camp-background{
+    background: #F5F5F5;
+    padding: 80px;
+    height: 100%;
+}
+
+.review-formatting{
+    background: #F5F5F5;
+    padding-top: 600px;
+    padding-left: 180px;
+    padding-right: 180px;
+}
+
+.overlayTextCamp {
+  position:absolute;
+  top:40%;
+  left:20%;
+  z-index:1;
+}
+
 .register-form{
   /*box-shadow: 3px 3px 20px #A7A7A7;*/
   background-blend-mode: multiply;
@@ -375,3 +410,82 @@ p {
     background-color: #4e62f8;*/
 
 }
+
+.camp-body{
+    background: #F5F5F5;
+}
+
+#clear-filter-button{
+  background: transparent;
+  border: transparent;
+  color: #4e62f8;
+  text-decoration: underline;
+  padding-left: 5px;
+  padding-top: 0;
+  font-size: 14px;
+}
+
+.example_f {
+   border-radius: 4px;
+   background: linear-gradient(to right, #4e62f8, #4e62f8) !important;
+   border: none;
+   color: #FFFFFF;
+   text-align: center;
+   text-transform: uppercase;
+   font-size: 13px;
+   padding: 10px;
+   width: 180px;
+   transition: all 0.4s;
+   cursor: pointer;
+   margin: 5px;
+ }
+ .example_f span {
+   cursor: pointer;
+   display: inline-block;
+   position: relative;
+   transition: 0.4s;
+ }
+ .example_f span:after {
+   content: '\FE62';
+   position: absolute;
+   opacity: 0;
+   top: 0;
+   right: -20px;
+   transition: 0.5s;
+ }
+ .example_f:hover span {
+   padding-right: 25px;
+ }
+ .example_f:hover span:after {
+   opacity: 1;
+   right: 0;
+ }
+
+ .a{
+    color: white !important;
+ }
+
+ .review-padding{
+    padding-bottom: 40px;
+ }
+
+ .review-stamp{
+    color: #4e62f8;
+ }
+
+ .alert-dismissible .close{
+    padding-bottom: 0;
+}
+
+#alert {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-bottom: 0;
+}
+
+.alert-warning{
+    margin: 0 !important;
+}
+

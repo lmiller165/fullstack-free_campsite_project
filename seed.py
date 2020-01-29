@@ -3,29 +3,14 @@ from faker import Faker
 import json
 import random
 
-#opening my json object from iOverlander:
-with open('json/iOverlander Places - 2019-11-12.json', 'r') as f:
+#opening my json object from iOverlander
+# I use this to pull information for my campsites
+with open('static/json/iOverlander Places - 2019-11-12.json', 'r') as f:
   campsite_dict = json.load(f)
 
+# Need to run first before running load_campsites
 def load_amenities():
     """Load amenities from json object"""
-
-    ###########################################################################
-    #I attempted to add amenities from json object. 
-    #It added, but it adds the same amenities over and over for each campsite. 
-    #Work on later. 
-
-    # for campsite in campsite_dict:
-    #     for amenity in campsite['amenities'][amenity]:
-
-    #         amenity = Amenity(name=amenity)
-    #         db.session.add(amenity)
-
-    ############################################################################
-
-    # amenities_lookup = {}
-
-    ############################################################################
 
     amenity_names = ["Open", 
                      "Electricity", 

@@ -232,8 +232,8 @@ var map = new mapboxgl.Map({
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <div class="pop-text"><p">${marker.properties.description}<p></div>
                     <div class="button_cont" align="center"><button type="button" class="example_f" id="add_to_trip" target="_blank" value="${marker.properties.title}"><span>ADD TO TRIP</button></div>
-                    <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a><span><sp>|<sp></span>
-                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>`))
+                    <a href="/campsite-details?campsite=${marker.properties.title}" id="clear-filter-button">View Details</a><span></span>
+                    <a href="/add-review?campsite=${marker.properties.title}" id="clear-filter-button">Add Review</a>`))
         .addTo(map);
 
     });
@@ -301,8 +301,8 @@ var map = new mapboxgl.Map({
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <p>${marker.properties.description}<p>
                      <div class="button_cont" align="center"><button type="button" class="example_f" id="add_to_trip" target="_blank" value="${marker.properties.title}"><span>ADD TO TRIP</button></div>
-                    <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
-                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>`))
+                    <a href="/campsite-details?campsite=${marker.properties.title}" id="clear-filter-button">View Details</a>
+                    <a href="/add-review?campsite=${marker.properties.title}" id="clear-filter-button" >Add Review</a>`))
         .addTo(map);
       });
     });
@@ -336,8 +336,8 @@ var map = new mapboxgl.Map({
           .setHTML(`<h3>${marker.properties.title}</h3>
                     <p>${marker.properties.description}<p>
                      <div class="button_cont" align="center"><button type="button" class="example_f" id="add_to_trip" target="_blank" value="${marker.properties.title}"><span>ADD TO TRIP</button></div>
-                    <a href="/campsite-details?campsite=${marker.properties.title}">View Details</a>
-                    <a href="/add-review?campsite=${marker.properties.title}">Add Review</a>`))
+                    <a href="/campsite-details?campsite=${marker.properties.title}" id="clear-filter-button">View Details</a>
+                    <a href="/add-review?campsite=${marker.properties.title}" id="clear-filter-button">Add Review</a>`))
         .addTo(map);
     });
   });
