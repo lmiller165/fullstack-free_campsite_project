@@ -141,7 +141,6 @@ def get_coordinates(state):
 
     }
 
-
     return state_coord[state]
 
 

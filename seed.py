@@ -9,6 +9,7 @@ with open('static/json/iOverlander Places - 2019-11-12.json', 'r') as f:
   campsite_dict = json.load(f)
 
 # Need to run first before running load_campsites
+# Using amenity names from the above json object
 def load_amenities():
     """Load amenities from json object"""
 
@@ -25,17 +26,17 @@ def load_amenities():
                      "Pet Friendly"
                       ]
 
+    # Run through the above dictionary and add amenities to our amenity table
     for name in amenity_names:
         amenity = Amenity(name=name)
         db.session.add(amenity)
 
-    #     amenities_lookup[name] = amenity
-
     db.session.commit()
 
+################################################################################
 
-    ###############################################
-
+# Small data set for initial testing
+# Do not need to run this when seeding data
 def load_sample_data():
     """Load a few sample users"""
 
@@ -51,7 +52,6 @@ def load_sample_data():
             permit_info=None)
     campsite_3.author = user_1
     db.session.add(campsite_3.author)
-
 
     db.session.commit()
 

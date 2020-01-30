@@ -27,6 +27,7 @@ def get_place_info(camp_id):
 
     #query into db to pull campsite info. 
     campsite = session.query(Campsite).filter_by(campsite_id=camp_id).first()
+    #lon always comes in a positive num, maybe a seeding issue. 
     lon = str(campsite.lon * -1)
     lat = str(campsite.lat)
     #Mapbox api request to get state
